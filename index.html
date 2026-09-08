@@ -495,6 +495,7 @@
 
   </div>
 </div>
+<div id="heroEndSentinel" style="height:1px;"></div>
 
 <section class="hero-cta-section">
   <div class="container">
@@ -910,18 +911,44 @@
   });
 
   /* ---------------- side card visibility ---------------- */
+  /* Uses IntersectionObserver instead of scroll+getBoundingClientRect: the old
+     approach forced a synchronous layout recalculation of the entire (440vh)
+     hero on every scroll tick — and once eagerly on page load, before first
+     paint — which showed up as an 800ms+ forced reflow blocking initial render
+     on throttled mobile CPUs. IntersectionObserver runs off the main thread's
+     critical path and never forces layout. */
   var sideCard = document.getElementById('sideCard');
-  var heroWrap = document.getElementById('heroWrap');
-  var footer = document.querySelector('.footer');
-  function updateSideCard(){
-    if(!sideCard) return;
-    var heroBottom = heroWrap.getBoundingClientRect().bottom;
-    var footerTop = footer.getBoundingClientRect().top;
-    var show = heroBottom < window.innerHeight * 0.6 && footerTop > window.innerHeight;
-    sideCard.classList.toggle('show', show);
+  if (sideCard) {
+    var heroPast = false, footerVisible = false;
+    var footerEl = document.querySelector('.footer');
+    var sentinel = document.getElementById('heroEndSentinel');
+
+    function refreshSideCard(){
+      sideCard.classList.toggle('show', heroPast && !footerVisible);
+    }
+
+    if (sentinel) {
+      var heroObserver = new IntersectionObserver(function(entries){
+        /* fires once the sentinel (placed right after the hero) scrolls
+           into the shrunk root — i.e. once its top has passed roughly 60%
+           up the viewport. Latches permanently true afterwards: once the
+           reader has scrolled past the hero intro the assist card stays
+           available (footer proximity hides it again, handled below). */
+        if (entries[0].isIntersecting) {
+          heroPast = true;
+          refreshSideCard();
+          heroObserver.unobserve(sentinel);
+        }
+      }, {rootMargin: '0px 0px -40% 0px', threshold: 0});
+      heroObserver.observe(sentinel);
+    }
+    if (footerEl) {
+      new IntersectionObserver(function(entries){
+        footerVisible = entries[0].isIntersecting;
+        refreshSideCard();
+      }, {threshold: 0}).observe(footerEl);
+    }
   }
-  window.addEventListener('scroll', updateSideCard, {passive:true});
-  updateSideCard();
 
   /* ---------------- FAQ accordion ---------------- */
   document.querySelectorAll('.faq-item').forEach(function(item){
@@ -1005,6 +1032,7 @@
   var heroPhaseTexts = document.querySelectorAll('.hero-phase-text p');
   var heroProgressBar = document.getElementById('heroProgressBar');
   var heroTitleBand = document.getElementById('heroTitleBand');
+  var heroWrap = document.getElementById('heroWrap');
 
   function onHeroScroll(){
     var rect = heroWrap.getBoundingClientRect();
@@ -1039,10 +1067,24 @@
     }, 150);
   });
 
-  window.addEventListener('scroll', onHeroScroll, {passive:true});
+  /* Throttle scroll-driven layout reads to once per animation frame instead
+     of once per scroll event, and defer the very first call to the next
+     frame rather than running it synchronously during initial script
+     execution — both avoid forcing layout before first paint. */
+  function rafThrottle(fn){
+    var ticking = false;
+    return function(){
+      if(!ticking){
+        ticking = true;
+        requestAnimationFrame(function(){ fn(); ticking = false; });
+      }
+    };
+  }
+
+  window.addEventListener('scroll', rafThrottle(onHeroScroll), {passive:true});
   sizeCanvas();
   loadImages();
-  onHeroScroll();
+  requestAnimationFrame(onHeroScroll);
 
   /* ---------------- PROCESS — scroll highlighted vertical stepper ---------------- */
   var processTrack = document.getElementById('processTrack');
@@ -1079,8 +1121,8 @@
     var trackProgress = Math.max(0, Math.min(1, (viewportTrigger - trackRect.top) / trackTotal));
     processLineFill.style.height = (trackProgress*100).toFixed(1) + '%';
   }
-  window.addEventListener('scroll', updateProcess, {passive:true});
-  updateProcess();
+  window.addEventListener('scroll', rafThrottle(updateProcess), {passive:true});
+  requestAnimationFrame(updateProcess);
 
   /* ---------------- COMPARE WIDGETS (before/after drag slider) ---------------- */
   function initCompare(widgetId, beforeWrapId, handleId, sliderId){

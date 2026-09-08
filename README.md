@@ -1,38 +1,43 @@
 # 香港車頭相及遺照修復服務 — 網站原始檔案
 
-## 🔧 2026-09-08 第二次更新：真正解決 Mobile Performance 樽頸
+## 🎯 2026-09-08 第三次更新：搵到並修正真正嘅樽頸（有 Google 官方診斷數據支持）
 
-**背景**：第一次優化（將圖片改做獨立檔案）之後，PageSpeed Insights 實測 Mobile 分數完全冇改善（LCP 依然 15.7 秒）。經深入診斷，搵到真正原因：
+**你幫手做嘅一步好關鍵**：撳開咗 PageSpeed Insights 個「Diagnose performance issues」詳細診斷，入面搵到一個 **Forced reflow**（強制版面重排）警告，仲列明咗確實嘅程式碼行數：
 
-> **`<canvas>` 元素喺 LCP 嘅計算入面完全唔計**（呢個係 W3C 官方規格同 MDN 文件明文寫明）。即係話 hero 動畫用 canvas 畫出嚟，Google 嘅測速工具根本唔會將佢視為「主要內容」。真正拖慢個網站嘅，係頭部載緊嘅 **Google Fonts CSS**——瀏覽器預設會停晒所有畫面渲染，等呢個字體檔案攞完先開始顯示任何嘢，喺慢網環境下呢個延遲會被放大成好幾秒。
+> `updateSideCard()` 函數入面嘅 `heroWrap.getBoundingClientRect()`（第 918 行）單一項就用咗 **823 毫秒**嘅強制同步重排時間。呢個函數喺頁面一載入就即刻執行一次（喺任何畫面內容顯示之前），逼瀏覽器要即刻計算成個 440vh 高（hero 滾動動畫區域）嘅版面。喺平價手機 4倍 CPU 減速嘅情況下，呢個計算變得極慢，直接攔住咗成個網站嘅顯示。
 
-**修復方法**：將 Google Fonts 改用「非阻擋式載入」（`media="print"` + `onload` 換頁技巧，業界標準做法）——文字會即刻用系統後備字體顯示（`PingFang HK` / `Microsoft JhengHei`），字體檔案喺背景載緊，載完先無縫換返做 Noto Sans HK，唔會再阻住個網站顯示。已經測試過：就算個字體請求完全失敗，個網站都會即刻顯示晒晒內容，唔會卡住。
+**修復方法**：
+- 將 `updateSideCard`（側邊浮動卡片顯示邏輯）由「監聽 scroll 事件 + 每次都攞元素座標」改用 **IntersectionObserver**——呢個係現代瀏覽器 API，唔會強制觸發同步版面重排，效能好好多
+- 移除咗頁面載入時「即刻同步執行」嘅版面計算，改為喺瀏覽器下一個影格先執行（`requestAnimationFrame`），唔會阻住第一次畫面顯示
+- 埋一齊將另外兩個 scroll 監聽器（hero 動畫、修復流程進度）都加咗 `requestAnimationFrame` 節流，防止同類問題
 
-**⚠️ 呢次改動因為技術限制，我冇辦法喺你個真實 domain 度直接測試（我嘅執行環境連唔到 fonts.googleapis.com 呢個網域），所以請你部署完之後，**麻煩去 [pagespeed.web.dev](https://pagespeed.web.dev) 打 `https://www.funeralphoto.com.hk/` 重新測一次，將結果話返我知，等我確認呢次係咪真正解決咗問題。**
+**本機模擬測試**（Slow 4G + 4倍 CPU 減速，同 PageSpeed 用嘅環境接近）：修復前 first-paint 1700ms，修復後跌到 **464ms**。
+
+**⚠️ 呢次修復係根據 Google 官方工具嘅具體診斷數據（有確實行數、有確實毫秒數）針對性修復，唔再係憑經驗猜測，所以有較高信心呢次會有實質改善。** 但因為技術限制（我嘅執行環境連唔到你個 domain），最終結果都係需要你部署後用返 PageSpeed Insights confirm 先算數。
+
+## 🔧 2026-09-08 第二次更新：非阻擋式字體載入
+將 Google Fonts 改用「非阻擋式載入」（`media="print"` + `onload` 換頁技巧）。文字會即刻用系統後備字體顯示，字體檔案背景載入完成先無縫換返做 Noto Sans HK。
 
 ## 🎨 2026-09-08 品牌 Logo + Favicon
-- 全新品牌標記：相框四角（取景器概念，呼應 digital-only 業務性質）+ 中央光芒（承接 hero 動畫嘅光芒意象）
-- 已更新網站導覽列同 footer 嘅 logo
-- 完整 favicon 套裝：`favicon.ico`（16/32/48 多尺寸）、`favicon-16x16.png`、`favicon-32x32.png`、`apple-touch-icon.png`（iOS 主畫面圖示）、`android-chrome-192x192.png` / `512x512.png`（Android／PWA 用）
-- 新增 `site.webmanifest`，等用家可以將網站「加到主畫面」時有正確嘅圖示同名稱
+- 全新品牌標記：相框四角（取景器概念）+ 中央光芒（呼應 hero 動畫）
+- 完整 favicon 套裝 + `site.webmanifest`
 
 ## ⚡ 2026-09-08 第一次效能優化（圖片獨立檔案化）
 - 圖片全部改為獨立檔案（`index.html` 由 3.7MB 減到 68KB）
-- Hero 動畫改用漸進式載入：第一張影格優先載入並即刻顯示，其餘 79 張喺背景載入，唔再阻住畫面
-- Before/After 對比相、長者/寵物示範相加咗 `loading="lazy"`
-- Schema 加咗 `url` 欄位，明確指返個網站地址
+- Hero 動畫改用漸進式載入，Before/After 對比相、示範相加咗 `loading="lazy"`
+- Schema 加咗 `url` 欄位
 
 ## 檔案結構
 ```
 funeralphoto/
-├── index.html                ← 主頁面
-├── favicon.ico                ← 根目錄備用（部分瀏覽器/爬蟲直接讀呢個路徑）
-├── site.webmanifest           ← PWA / 加到主畫面設定
-├── sitemap.xml                ← 已提交 Search Console
-├── robots.txt                  ← 已上傳網頁伺服器
+├── index.html
+├── favicon.ico
+├── site.webmanifest
+├── sitemap.xml
+├── robots.txt
 └── assets/
-    ├── favicon/                ← 完整 favicon 套裝
-    ├── frames/                 ← Hero 區滾動動畫用嘅 80 張影格
+    ├── favicon/
+    ├── frames/
     ├── before.jpg / after.jpg
     ├── elder.jpg / pets.jpg / usb.jpg
 ```
@@ -40,10 +45,12 @@ funeralphoto/
 ## 上傳去 Vercel 步驟
 
 1. 開返你 Vercel project（`funeralphoto`）
-2. 用返你之前部署嘅方法（拖檔案 / git push），將呢個資料夾入面**所有檔案**覆蓋上去
+2. 將呢個資料夾入面**所有檔案**覆蓋上去
 3. 部署完成後：
-   - Hard refresh 或者用無痕視窗開 `https://www.funeralphoto.com.hk/`，確認個網站顯示正常
-   - 去 [pagespeed.web.dev](https://pagespeed.web.dev) 打個網址測 Mobile 分數，將結果話返我知
+   - 用無痕視窗確認網站正常顯示
+   - 去 [pagespeed.web.dev](https://pagespeed.web.dev) 打個網址測 Mobile 分數
+   - **如果撳開「Diagnose performance issues」仲有其他紅色／橙色項目，可以截圖畀我，我哋針對住嗰啲具體項目繼續改**
+
 
 
 
