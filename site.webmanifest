@@ -1,0 +1,11 @@
+{
+  "name": "香港車頭相及遺照修復服務",
+  "short_name": "車頭相修復",
+  "icons": [
+    { "src": "/assets/favicon/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/favicon/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#0a0906",
+  "background_color": "#0a0906",
+  "display": "standalone"
+}

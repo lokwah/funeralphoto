@@ -1,20 +1,52 @@
 # 香港車頭相及遺照修復服務 — 網站原始檔案
 
+## 🎨 2026-09-08 新增：品牌 Logo + Favicon
+- 全新品牌標記：相框四角（取景器概念，呼應 digital-only 業務性質）+ 中央光芒（承接 hero 動畫嘅光芒意象）
+- 已更新網站導覽列同 footer 嘅 logo
+- 完整 favicon 套裝：`favicon.ico`（16/32/48 多尺寸）、`favicon-16x16.png`、`favicon-32x32.png`、`apple-touch-icon.png`（iOS 主畫面圖示）、`android-chrome-192x192.png` / `512x512.png`（Android／PWA 用）
+- 新增 `site.webmanifest`，等用家可以將網站「加到主畫面」時有正確嘅圖示同名稱
+
+## ⚡ 2026-09-08 效能優化更新
+本版本已修正 mobile PageSpeed 效能問題：
+- 圖片全部改為獨立檔案（`index.html` 由 3.7MB 減到 68KB）
+- Hero 動畫改用漸進式載入：第一張影格優先載入並即刻顯示，其餘 79 張喺背景載入，唔再阻住畫面
+- Before/After 對比相、長者/寵物示範相加咗 `loading="lazy"`
+- Schema 加咗 `url` 欄位，明確指返個網站地址
+
+模擬 Slow 4G 網絡測試：內容顯示時間由原本卡住等全部圖片（15.8秒 LCP）大幅縮短至 3.4 秒內見到內容。
+
 ## 檔案結構
 ```
 funeralphoto/
-├── index.html              ← 主頁面（GitHub Pages 會自動讀取呢個做首頁）
+├── index.html                ← 主頁面（68KB）
+├── favicon.ico                ← 根目錄備用（部分瀏覽器/爬蟲直接讀呢個路徑）
+├── site.webmanifest           ← PWA / 加到主畫面設定
+├── sitemap.xml                ← 已提交 Search Console
+├── robots.txt                  ← 已上傳網頁伺服器
 └── assets/
-    ├── frames/              ← Hero 區滾動動畫用嘅 80 張影格
+    ├── favicon/                ← 完整 favicon 套裝
+    │   ├── favicon.ico
+    │   ├── favicon-16x16.png
+    │   ├── favicon-32x32.png
+    │   ├── apple-touch-icon.png
+    │   ├── android-chrome-192x192.png
+    │   └── android-chrome-512x512.png
+    ├── frames/                 ← Hero 區滾動動畫用嘅 80 張影格
     │   ├── frame-001.jpg
-    │   ├── frame-002.jpg
     │   └── ... (共 80 張)
-    ├── before.jpg           ← 修復前對比圖
-    ├── after.jpg            ← 修復後對比圖
-    ├── elder.jpg            ← 上門長者肖像拍攝示範相
-    ├── pets.jpg              ← 寵物遺照示範相
-    └── usb.jpg               ← USB 隨身碟產品相
+    ├── before.jpg / after.jpg
+    ├── elder.jpg / pets.jpg / usb.jpg
 ```
+
+## 上傳去 Vercel 步驟
+
+1. 開返你 Vercel project（`funeralphoto`）
+2. 用返你之前部署嘅方法（拖檔案 / git push），將呢個資料夾入面**所有檔案**（包括 `favicon.ico`、`site.webmanifest`、`index.html`、`sitemap.xml`、`robots.txt`、成個 `assets` 資料夾）覆蓋上去
+3. 部署完成後：
+   - 開 `https://www.funeralphoto.com.hk/`，睇瀏覽器分頁有冇見到新 favicon（可能要 hard refresh／清 cache 先見到）
+   - 去 [pagespeed.web.dev](https://pagespeed.web.dev) 打個網址再測一次，確認 Mobile 分數已經上升
+
+
 
 全部 86 個檔案，總大小約 2.9MB。呢個版本嘅圖片係獨立檔案（唔係一個好巨型嘅 HTML），方便日後單獨更換某張相，亦令 GitHub repo 睇落更清晰。
 
