@@ -19,7 +19,12 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#0a0906">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;600;700;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!-- Fonts load non-render-blocking: text paints immediately with fallback fonts,
+     then swaps to Noto Sans HK / Roboto once loaded, so the font request never
+     delays First/Largest Contentful Paint on slow connections. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;600;700;900&family=Roboto:wght@400;500;700;900&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;600;700;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;600;700;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",

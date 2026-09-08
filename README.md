@@ -1,39 +1,38 @@
 # 香港車頭相及遺照修復服務 — 網站原始檔案
 
-## 🎨 2026-09-08 新增：品牌 Logo + Favicon
+## 🔧 2026-09-08 第二次更新：真正解決 Mobile Performance 樽頸
+
+**背景**：第一次優化（將圖片改做獨立檔案）之後，PageSpeed Insights 實測 Mobile 分數完全冇改善（LCP 依然 15.7 秒）。經深入診斷，搵到真正原因：
+
+> **`<canvas>` 元素喺 LCP 嘅計算入面完全唔計**（呢個係 W3C 官方規格同 MDN 文件明文寫明）。即係話 hero 動畫用 canvas 畫出嚟，Google 嘅測速工具根本唔會將佢視為「主要內容」。真正拖慢個網站嘅，係頭部載緊嘅 **Google Fonts CSS**——瀏覽器預設會停晒所有畫面渲染，等呢個字體檔案攞完先開始顯示任何嘢，喺慢網環境下呢個延遲會被放大成好幾秒。
+
+**修復方法**：將 Google Fonts 改用「非阻擋式載入」（`media="print"` + `onload` 換頁技巧，業界標準做法）——文字會即刻用系統後備字體顯示（`PingFang HK` / `Microsoft JhengHei`），字體檔案喺背景載緊，載完先無縫換返做 Noto Sans HK，唔會再阻住個網站顯示。已經測試過：就算個字體請求完全失敗，個網站都會即刻顯示晒晒內容，唔會卡住。
+
+**⚠️ 呢次改動因為技術限制，我冇辦法喺你個真實 domain 度直接測試（我嘅執行環境連唔到 fonts.googleapis.com 呢個網域），所以請你部署完之後，**麻煩去 [pagespeed.web.dev](https://pagespeed.web.dev) 打 `https://www.funeralphoto.com.hk/` 重新測一次，將結果話返我知，等我確認呢次係咪真正解決咗問題。**
+
+## 🎨 2026-09-08 品牌 Logo + Favicon
 - 全新品牌標記：相框四角（取景器概念，呼應 digital-only 業務性質）+ 中央光芒（承接 hero 動畫嘅光芒意象）
 - 已更新網站導覽列同 footer 嘅 logo
 - 完整 favicon 套裝：`favicon.ico`（16/32/48 多尺寸）、`favicon-16x16.png`、`favicon-32x32.png`、`apple-touch-icon.png`（iOS 主畫面圖示）、`android-chrome-192x192.png` / `512x512.png`（Android／PWA 用）
 - 新增 `site.webmanifest`，等用家可以將網站「加到主畫面」時有正確嘅圖示同名稱
 
-## ⚡ 2026-09-08 效能優化更新
-本版本已修正 mobile PageSpeed 效能問題：
+## ⚡ 2026-09-08 第一次效能優化（圖片獨立檔案化）
 - 圖片全部改為獨立檔案（`index.html` 由 3.7MB 減到 68KB）
 - Hero 動畫改用漸進式載入：第一張影格優先載入並即刻顯示，其餘 79 張喺背景載入，唔再阻住畫面
 - Before/After 對比相、長者/寵物示範相加咗 `loading="lazy"`
 - Schema 加咗 `url` 欄位，明確指返個網站地址
 
-模擬 Slow 4G 網絡測試：內容顯示時間由原本卡住等全部圖片（15.8秒 LCP）大幅縮短至 3.4 秒內見到內容。
-
 ## 檔案結構
 ```
 funeralphoto/
-├── index.html                ← 主頁面（68KB）
+├── index.html                ← 主頁面
 ├── favicon.ico                ← 根目錄備用（部分瀏覽器/爬蟲直接讀呢個路徑）
 ├── site.webmanifest           ← PWA / 加到主畫面設定
 ├── sitemap.xml                ← 已提交 Search Console
 ├── robots.txt                  ← 已上傳網頁伺服器
 └── assets/
     ├── favicon/                ← 完整 favicon 套裝
-    │   ├── favicon.ico
-    │   ├── favicon-16x16.png
-    │   ├── favicon-32x32.png
-    │   ├── apple-touch-icon.png
-    │   ├── android-chrome-192x192.png
-    │   └── android-chrome-512x512.png
     ├── frames/                 ← Hero 區滾動動畫用嘅 80 張影格
-    │   ├── frame-001.jpg
-    │   └── ... (共 80 張)
     ├── before.jpg / after.jpg
     ├── elder.jpg / pets.jpg / usb.jpg
 ```
@@ -41,10 +40,11 @@ funeralphoto/
 ## 上傳去 Vercel 步驟
 
 1. 開返你 Vercel project（`funeralphoto`）
-2. 用返你之前部署嘅方法（拖檔案 / git push），將呢個資料夾入面**所有檔案**（包括 `favicon.ico`、`site.webmanifest`、`index.html`、`sitemap.xml`、`robots.txt`、成個 `assets` 資料夾）覆蓋上去
+2. 用返你之前部署嘅方法（拖檔案 / git push），將呢個資料夾入面**所有檔案**覆蓋上去
 3. 部署完成後：
-   - 開 `https://www.funeralphoto.com.hk/`，睇瀏覽器分頁有冇見到新 favicon（可能要 hard refresh／清 cache 先見到）
-   - 去 [pagespeed.web.dev](https://pagespeed.web.dev) 打個網址再測一次，確認 Mobile 分數已經上升
+   - Hard refresh 或者用無痕視窗開 `https://www.funeralphoto.com.hk/`，確認個網站顯示正常
+   - 去 [pagespeed.web.dev](https://pagespeed.web.dev) 打個網址測 Mobile 分數，將結果話返我知
+
 
 
 
