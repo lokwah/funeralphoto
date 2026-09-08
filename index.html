@@ -883,7 +883,7 @@
     <div class="footer-bottom">
       <span>香港車頭相及遺照修復服務 · 一口價收費．高清電子檔．保留先人神韻</span>
       <span>只提供電子檔修復，不設實體沖印、相框或石碑製作</span>
-      <span style="opacity:0.5;">build v2026.09.08-3 (reflow-fix)</span>
+      <span style="opacity:0.5;">build v2026.09.08-4 (resize-observer-fix)</span>
     </div>
   </div>
 </footer>
@@ -976,10 +976,35 @@
   var currentFrame = -1;
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-  function sizeCanvas(){
-    var rect = canvas.getBoundingClientRect();
-    canvas.width = Math.round(rect.width * dpr);
-    canvas.height = Math.round(rect.height * dpr);
+  /* Canvas sizing uses ResizeObserver instead of getBoundingClientRect(): the
+     latter forces a synchronous layout recalculation the instant it's called
+     (a "forced reflow"), and calling it right as the first frame's network
+     response arrives was costing ~270ms of blocked main-thread time on
+     throttled mobile CPUs. ResizeObserver reports the box size after layout
+     has already happened, so it never forces extra work. */
+  var canvasReady = false;
+  var pendingDraw = -1;
+
+  function applyCanvasSize(width, height){
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    canvasReady = true;
+    if(pendingDraw >= 0){ drawFrame(pendingDraw); pendingDraw = -1; }
+    else if(currentFrame >= 0){ drawFrame(currentFrame); }
+  }
+
+  if('ResizeObserver' in window){
+    new ResizeObserver(function(entries){
+      var box = entries[0].contentRect;
+      applyCanvasSize(box.width, box.height);
+    }).observe(canvas);
+  } else {
+    /* very old browsers only: defer to next frame rather than forcing
+       layout synchronously during initial script execution */
+    requestAnimationFrame(function(){
+      var rect = canvas.getBoundingClientRect();
+      applyCanvasSize(rect.width, rect.height);
+    });
   }
 
   function drawFrame(idx){
@@ -1003,8 +1028,7 @@
     img.onload = function(){
       loadedCount++;
       if(i === 0){
-        sizeCanvas();
-        drawFrame(0);
+        if(canvasReady){ drawFrame(0); } else { pendingDraw = 0; }
         /* reveal hero as soon as the first frame is ready, not all 80 */
         heroLoading.style.opacity = '0';
         setTimeout(function(){ heroLoading.style.display = 'none'; }, 650);
@@ -1058,15 +1082,9 @@
     heroTitleBand.style.transform = 'translateY(' + titleShift.toFixed(1) + 'px)';
   }
 
-  var resizeTimer;
-  window.addEventListener('resize', function(){
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function(){
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      sizeCanvas();
-      if(currentFrame >= 0) drawFrame(currentFrame);
-    }, 150);
-  });
+  /* No manual resize listener needed for canvas sizing — the ResizeObserver
+     above already re-fires whenever the canvas's box size changes (which
+     covers window resizes), without ever forcing a synchronous layout read. */
 
   /* Throttle scroll-driven layout reads to once per animation frame instead
      of once per scroll event, and defer the very first call to the next
@@ -1083,7 +1101,6 @@
   }
 
   window.addEventListener('scroll', rafThrottle(onHeroScroll), {passive:true});
-  sizeCanvas();
   loadImages();
   requestAnimationFrame(onHeroScroll);
 
@@ -1133,12 +1150,24 @@
     var slider = document.getElementById(sliderId);
     if(!widget) return;
 
+    /* Cache the widget's width via ResizeObserver instead of reading
+       getBoundingClientRect() inside setPos() on every drag/slider move —
+       the old version wrote beforeWrap.style.width then immediately read
+       widget.getBoundingClientRect(), a classic write-then-read pattern
+       that forces a synchronous layout on every pointermove while dragging. */
+    var cachedWidth = widget.clientWidth;
+    var beforeImg = beforeWrap.querySelector('img');
+    if('ResizeObserver' in window){
+      new ResizeObserver(function(entries){
+        cachedWidth = entries[0].contentRect.width;
+        if(beforeImg) beforeImg.style.width = cachedWidth + 'px';
+      }).observe(widget);
+    }
+
     function setPos(pct){
       pct = Math.max(0, Math.min(100, pct));
       beforeWrap.style.width = pct + '%';
-      var img = beforeWrap.querySelector('img');
-      var widgetWidth = widget.getBoundingClientRect().width;
-      img.style.width = widgetWidth + 'px';
+      if(beforeImg) beforeImg.style.width = cachedWidth + 'px';
       handle.style.left = pct + '%';
       slider.value = pct;
     }
@@ -1163,7 +1192,6 @@
 
     slider.addEventListener('input', function(){ setPos(Number(slider.value)); });
 
-    window.addEventListener('resize', function(){ setPos(Number(slider.value)); });
     setPos(50);
   }
   initCompare('compareWidget1','compareBeforeWrap1','compareHandle1','compareSlider1');

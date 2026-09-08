@@ -1,6 +1,17 @@
 # 香港車頭相及遺照修復服務 — 網站原始檔案
 
-## 🎯 2026-09-08 第三次更新：搵到並修正真正嘅樽頸（有 Google 官方診斷數據支持）
+## 🎯 2026-09-08 第四次更新：修正第二個 forced reflow（有 Google 官方數據支持）
+
+你撳開新一輪「Diagnose performance issues」之後，Forced reflow 總時間已經由 1119ms 跌到 400ms（減咗六成四），證明上次嘅修復有效，但仲有兩個殘餘位置：
+
+> - `sizeCanvas()` 入面嘅 `canvas.getBoundingClientRect()`（274ms）——第一張 hero 影格下載完成嗰一刻觸發
+> - Compare widget 嘅 `widget.getBoundingClientRect()`（1ms，但拖曳滑桿時可能重複觸發）
+
+**修復方法**：全部改用 **ResizeObserver**（現代瀏覽器 API，喺版面已經計算完之後先通知你，唔會強制觸發同步重排）取代 `getBoundingClientRect()`。埋一齊修正咗 compare widget 入面「寫完樣式即刻讀取尺寸」呢個經典嘅 layout thrashing pattern，改善拖曳時嘅流暢度。
+
+已經測試過：hero 動畫顯示正常、成頁滾動冇 JS error、compare widget 拖曳功能正常。
+
+## 🎯 2026-09-08 第三次更新：修正第一個 forced reflow
 
 **你幫手做嘅一步好關鍵**：撳開咗 PageSpeed Insights 個「Diagnose performance issues」詳細診斷，入面搵到一個 **Forced reflow**（強制版面重排）警告，仲列明咗確實嘅程式碼行數：
 
