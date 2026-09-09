@@ -1,5 +1,11 @@
 # 香港車頭相及遺照修復服務 — 網站原始檔案
 
+## 🎨 2026-09-08 第五次更新：介面優化 + 新增浮動 WhatsApp 按鈕
+
+1. **手機選單背景加深**：透明度由 0.66 提升到 0.99，喺內容豐富嘅背景之下讀取更清晰
+2. **新增浮動 WhatsApp 按鈕**：右下角固定顯示，只喺 desktop（>980px）出現，連去 `https://wa.me/85297854872?text=Hi`
+3. **Compare widget 曾經一度誤判有 bug**：優化過程中一度以為 `ResizeObserver`/`clip-path` 令 compare widget 顯示全黑，經直接用真實瀏覽器（非 headless 測試環境）反覆驗證後，證實純粹係測試腳本嘅 `scroll-behavior: smooth` 動畫時序假象，並非真正嘅程式碼問題。為安全起見，已將 compare widget 完整還原做最初驗證穩定嘅版本（`getBoundingClientRect()`），呢個位嘅 228ms forced reflow 優化留返第時再處理。
+
 ## 🎯 2026-09-08 第四次更新：修正第二個 forced reflow（有 Google 官方數據支持）
 
 你撳開新一輪「Diagnose performance issues」之後，Forced reflow 總時間已經由 1119ms 跌到 400ms（減咗六成四），證明上次嘅修復有效，但仲有兩個殘餘位置：
