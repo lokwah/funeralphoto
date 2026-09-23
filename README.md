@@ -1,5 +1,18 @@
 # 香港車頭相及遺照修復服務 — 網站原始檔案
 
+## 🔍 2026-09-23 全面 Review：修正咗 5 個問題
+
+主動由頭到尾檢查成個網站（內容、HTML 有效性、SEO、無障礙瀏覽、資源完整性），搵到並修正：
+
+1. **標題層級跳級**（無障礙瀏覽問題，Lighthouse 之前提過但未跟進）：`h1→h4`、`h2→h4`、`h2→h5` 三處跳級全部修正做正確逐級遞減（side-card 標題改做非標題 `<p>`，process 步驟同 footer 欄目標題調整層級）
+2. **重複 HTML id**（`navMarkGrad` 喺 header 同 footer logo 各出現一次，屬無效 HTML，有機會令部分瀏覽器渲染錯漸層）：footer 版本改名做 `navMarkGradFooter`
+3. **3 張 sample gallery「修復前」相片缺咗 `loading="lazy"`**（「修復後」個個都有，得返呢 3 張漏咗）：已補齊，全站 14 張圖片依家全部一致用 lazy loading
+4. **缺咗 `og:image`**：網站連結喺 WhatsApp／Facebook 分享出嚟本來冇預覽圖，得返純文字。已加返 `og:image`、`og:image:width/height`、`twitter:card`
+5. **FAQPage 結構化數據唔齊全**：頁面實際有 9 條 FAQ，但 schema 淨係得 6 條（漏咗「實體舊相點處理」「點收取檔案」「接受海外付款」呢 3 條），令佢哋攞唔到 Google FAQ 摺疊卡片嘅機會。已補齊至 9 條，同頁面內容完全對應
+
+全部改動已重新驗證：JSON-LD 全部通過驗證、heading 順序完全正確、冇重複 id、desktop/tablet/mobile 三個斷點全頁滾動測試冇 JS error、5 個 compare widget 拖曳功能全部正常。
+
+
 ## 🆕 2026-09-23 更新：新增悼念冊服務 + 付款 logo + 內容擴充
 
 1. **付款方式改用 monochrome 圖示**：VISA / Mastercard / PayPal / PayMe / 轉數快 FPS / 銀行過數，由純文字改做半透明單色圖示徽章
