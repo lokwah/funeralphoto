@@ -50,7 +50,8 @@
     {"@type":"Offer","name":"車頭相・靈堂相・先人相修復","price":"300","priceCurrency":"HKD"},
     {"@type":"Offer","name":"香港上門長者肖像拍攝","price":"1000","priceCurrency":"HKD"},
     {"@type":"Offer","name":"寵物遺照及紀念相片修復","price":"300","priceCurrency":"HKD"},
-    {"@type":"Offer","name":"USB-C 雙插頭隨身碟備份","price":"330","priceCurrency":"HKD"}
+    {"@type":"Offer","name":"USB-C 雙插頭隨身碟備份","price":"330","priceCurrency":"HKD"},
+    {"@type":"Offer","name":"喪禮悼念册設計及製作","priceCurrency":"HKD"}
   ]
 }
 </script>
@@ -375,7 +376,7 @@
   .service-price{font-family:var(--num); color:var(--gold-bright); font-size:22px; font-weight:800;}
   .service-price small{font-family:var(--sans); color:var(--muted); font-size:13px; font-weight:500;}
 
-  .services-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .services-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
   .service-card{padding:34px 30px; border-radius:var(--radius-lg); background:var(--glass-bg); border:1px solid var(--glass-border); display:flex; flex-direction:column; gap:16px; transition:transform .35s ease, border-color .35s ease, background .35s ease; position:relative; overflow:hidden;}
   .service-card:hover{transform:translateY(-6px); border-color:rgba(232,205,138,0.35); background:var(--glass-bg-2);}
   .service-card-media{width:100%; aspect-ratio:3/4; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--line-soft); background:#111;}
@@ -396,7 +397,13 @@
   .price-strip .headline{font-size:20px; font-weight:800; margin-bottom:6px;}
   .price-strip .sub{font-size:14.5px; color:var(--muted);}
   .price-strip .pay-icons{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
-  .price-strip .pay-icons span{font-size:13px; padding:7px 14px; border-radius:8px; border:1px solid var(--line-soft); color:var(--muted); font-weight:600;}
+  .pay-badge{
+    display:inline-flex; align-items:center; gap:7px; font-size:12.5px; padding:8px 14px; border-radius:8px;
+    border:1px solid var(--line-soft); color:var(--ivory-dim); font-weight:600; opacity:0.68;
+    transition:opacity .25s ease;
+  }
+  .pay-badge:hover{opacity:1;}
+  .pay-badge svg{width:18px; height:18px; flex-shrink:0; stroke:var(--ivory-dim); fill:none;}
 
   /* ---------- FAQ ---------- */
   .faq-list{border-top:1px solid var(--line-soft);}
@@ -703,14 +710,14 @@
         <div class="service-featured-body">
           <span class="eyebrow">重點服務</span>
           <h3>車頭相・靈堂相・先人相修復</h3>
-          <p class="desc">適合用於出殯、靈堂佈置、製作石碑相或陶瓷相片（瓷相）、家族紀念或長久供奉之用。我們以尖端數碼技術，配合莊重、細心及尊重的態度處理每一份委託。</p>
+          <p class="desc">適合用於出殯、靈堂佈置、訃告、悼念冊、製作石碑相或陶瓷相片（瓷相）、家族紀念或長久供奉之用。我們以尖端數碼技術，配合莊重、細心及尊重的態度處理每一份委託。</p>
           <p class="desc">服務範圍包括：修復舊相泛黃、褪色、污漬、摺痕及輕微破損；改善模糊、低解像度及放大後的起格情況；從多人合照中裁出先人肖像；修正原相歪斜的角度；透過人工智能輔助還原先人青春時期；修補皺紋、閉眼、調整眼神並保留先人容貌神韻；整理雜亂背景，專業去背，換成素雅、莊重背景；校正色彩、光線、角度及構圖；修飾衣領、髮型及不影響容貌辨識的細節；黑白相片色彩還原。</p>
-          <p class="desc">本服務以處理電子檔為主，建議提供相機、手機原檔、未壓縮檔案或掃描檔，以保留更多修復細節。如只持有實體舊相，本公司可代為安排翻拍或掃描，另收行政費用。</p>
+          <p class="desc">本服務以處理電子檔為主，建議提供相機、手機原檔、未壓縮檔案或掃描檔，以保留更多修復細節。如只持有實體舊相，本公司可代為安排翻拍或掃描，另收行政費用。如需保留雙人合照（例如伉儷合照）作紀念，收費為 HK$600。</p>
           <div class="service-tags">
             <span>泛黃 / 破損修復</span><span>合照裁切</span><span>去背換景</span><span>黑白上色</span><span>AI 輔助還原青春容貌</span>
           </div>
           <div class="service-featured-foot">
-            <div class="service-price">HK$300 <small>/ 張，一口價不另收費</small></div>
+            <div class="service-price">HK$300 <small>/ 一人 / 一張，一口價不另收費</small></div>
             <div class="btn-row">
               <a class="btn btn-gold btn-sm" href="https://docs.google.com/forms/d/e/1FAIpQLSf457xOfiPYH9YBGjIJ4xzu6OHuA3pLVe3rDS6pabatgHRIsQ/viewform?usp=headerapp" target="_blank" rel="noopener">訂購服務</a>
               <a class="btn btn-ghost btn-sm" href="https://wa.me/85297854872?text=Hi" target="_blank" rel="noopener">WhatsApp 查詢</a>
@@ -819,6 +826,19 @@
           </div>
         </div>
 
+        <div class="service-card reveal">
+          <div class="service-card-media"><img src="assets/booklet.jpg" alt="喪禮悼念冊設計及製作示範" loading="lazy"></div>
+          <h3>喪禮悼念册設計及製作</h3>
+          <p class="desc">為先人設計莊重得體的紀念冊，涵蓋生平紀念冊、生平傳記、喪禮悼念冊、安息禮拜小冊子及追思會小冊子，記錄先人一生點滴，讓親友喺儀式上留存追思。</p>
+          <div class="service-tags">
+            <span>生平紀念冊</span><span>生平傳記</span><span>安息禮拜小冊子</span><span>追思會小冊子</span>
+          </div>
+          <div class="service-foot">
+            <div class="service-price" style="font-size:14.5px; font-weight:700; font-family:var(--sans); color:var(--ivory-dim);">設計費用因應內容而定</div>
+            <a class="btn btn-ghost btn-sm" href="https://wa.me/85297854872?text=Hi" target="_blank" rel="noopener">WhatsApp 查詢</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -850,7 +870,30 @@
           <div class="headline">支援本地及海外付款</div>
           <div class="sub">每筆訂單以港幣（HKD）結算，一口價收費，過程不會再另外收費。</div>
           <div class="pay-icons">
-            <span>VISA</span><span>Mastercard</span><span>PayPal</span><span>Payme</span><span>轉數快 FPS</span><span>銀行過數</span>
+            <span class="pay-badge">
+              <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="2"/><path d="M2.5 9.5h19"/></svg>
+              VISA
+            </span>
+            <span class="pay-badge">
+              <svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="9.5" cy="12" r="6.2"/><circle cx="14.5" cy="12" r="6.2"/></svg>
+              Mastercard
+            </span>
+            <span class="pay-badge">
+              <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h6.5a4 4 0 0 1 0 8H9l-1.2 8"/><path d="M9.5 8.5H15a4 4 0 0 1 0 8h-3.8"/></svg>
+              PayPal
+            </span>
+            <span class="pay-badge">
+              <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.2"/><path d="M6.5 18h11"/><circle cx="12" cy="19.6" r="0.3" fill="var(--ivory-dim)"/></svg>
+              PayMe
+            </span>
+            <span class="pay-badge">
+              <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.6-5.7L20 8.7"/><path d="M20 4v4.7h-4.7"/><path d="M20 12a8 8 0 0 1-13.6 5.7L4 15.3"/><path d="M4 20v-4.7h4.7"/></svg>
+              轉數快 FPS
+            </span>
+            <span class="pay-badge">
+              <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 4l9 5.5"/><path d="M4.5 9.5v9M9 9.5v9M15 9.5v9M19.5 9.5v9"/><path d="M3 18.5h18"/></svg>
+              銀行過數
+            </span>
           </div>
         </div>
         <a class="btn btn-gold" href="https://docs.google.com/forms/d/e/1FAIpQLSf457xOfiPYH9YBGjIJ4xzu6OHuA3pLVe3rDS6pabatgHRIsQ/viewform?usp=headerapp" target="_blank" rel="noopener">訂購服務</a>
