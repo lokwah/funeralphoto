@@ -72,7 +72,7 @@
     {"@type":"Question","name":"雙人合葬相點樣排位？相片規格唔啱都可以處理嗎？","acceptedAnswer":{"@type":"Answer","text":"傳統一般以先人視角為準，男左女右：即站在墓碑前面向墓碑時，男士在右、女士在左，碑文上的名字、生卒年亦須與相片左右位置一致。不同墓園及家庭習俗或有分別，建議先向墓園、石碑供應商或家人確認。如你提供的相片尺寸、比例或人物位置不符合要求（例如只有兩張單人相、左右位置相反或構圖不同），我們都可以協助調整、合成及重新排位，毋須擔心。"}},
     {"@type":"Question","name":"會否把樣貌修到不像本人？","acceptedAnswer":{"@type":"Answer","text":"不會。我們以保留先人的五官、神韻及可辨識特徵為首要原則。修復重點是改善相片品質、整理背景與構圖，而不是改變一個人的樣貌。"}},
     {"@type":"Question","name":"服務是否包括印相？","acceptedAnswer":{"@type":"Answer","text":"不包括。本公司只提供修復後的高清電子檔，不設實體沖印、相框、石碑製作或代交服務。"}},
-    {"@type":"Question","name":"收費是否已經包晒，會唔會另外收費？","acceptedAnswer":{"@type":"Answer","text":"每項服務均為一口價，車頭相及遺照修復 HK$300／張，已包括修復舊相瑕疵、整理背景、色彩校正及交付高清電子檔，過程中不會再另外收費。"}},
+    {"@type":"Question","name":"收費是否已經包晒，會唔會另外收費？","acceptedAnswer":{"@type":"Answer","text":"每項服務均為一口價，車頭相及遺照修復 HK$300／張，已包括修復舊相瑕疵、整理背景、色彩校正、最多 3 次修改及交付高清電子檔。超出修改次數或重大變更另行收費，詳見「相片修復服務規則」。"}},
     {"@type":"Question","name":"我只有實體舊相，怎樣處理？","acceptedAnswer":{"@type":"Answer","text":"你可自行掃描後傳送，或查詢由我們代為翻拍／掃描的安排；此項服務會收取額外行政費。客戶如自行掃描，建議使用彩色模式及 600 DPI 或以上設定。"}},
     {"@type":"Question","name":"完成後怎樣收取檔案？","acceptedAnswer":{"@type":"Answer","text":"修復完成後，會以電子方式交付 JPG 高清檔。客戶亦可額外選購 USB-C 雙插頭隨身碟作備份。"}},
     {"@type":"Question","name":"接受海外付款方式？","acceptedAnswer":{"@type":"Answer","text":"可以，每筆訂單會以港幣（HKD）結算。使用海外銀行信用卡付款，發卡銀行可能收取外幣交易手續費，有關費用需由客戶支付，詳情請聯絡發卡銀行查詢。"}}
@@ -426,6 +426,14 @@
   .pay-badge svg{width:18px; height:18px; flex-shrink:0; stroke:var(--ivory-dim); fill:none;}
 
   /* ---------- FAQ ---------- */
+
+  /* ---------- SERVICE RULES ---------- */
+  .rules-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .rule-item{display:flex; gap:18px; padding:26px 26px; border-radius:20px; background:var(--glass-bg); border:1px solid var(--line-soft);}
+  .rule-no{font-family:var(--num); font-weight:800; font-size:22px; color:var(--gold-bright); flex-shrink:0; min-width:34px;}
+  .rule-item h3{font-size:17.5px; font-weight:800; color:var(--ivory); margin-bottom:8px;}
+  .rule-item p{font-size:15.5px; color:var(--muted); line-height:1.85;}
+  @media (max-width:900px){ .rules-grid{grid-template-columns:1fr;} .rule-item{padding:22px 20px; gap:14px;} }
   .faq-list{border-top:1px solid var(--line-soft);}
   .faq-item{border-bottom:1px solid var(--line-soft);}
   .faq-q{width:100%; display:flex; align-items:center; justify-content:space-between; padding:26px 4px; text-align:left; font-size:17px; font-weight:700; color:var(--ivory); gap:20px;}
@@ -518,6 +526,7 @@
       <a href="#process">修復流程</a>
       <a href="#pricing">付款方式</a>
       <a href="#faq">常見問題</a>
+      <a href="#rules">服務規則</a>
     </nav>
     <div class="nav-cta">
       <a class="btn btn-gold btn-sm" href="https://docs.google.com/forms/d/e/1FAIpQLSf457xOfiPYH9YBGjIJ4xzu6OHuA3pLVe3rDS6pabatgHRIsQ/viewform?usp=headerapp" target="_blank" rel="noopener">訂購服務</a>
@@ -889,7 +898,7 @@
       <div class="price-strip reveal">
         <div class="left">
           <div class="headline">支援本地及海外付款</div>
-          <div class="sub">每筆訂單以港幣（HKD）結算，一口價收費，過程不會再另外收費。</div>
+          <div class="sub">每筆訂單以港幣（HKD）結算，一口價收費，已包最多 3 次修改，詳見服務規則。</div>
           <div class="pay-icons">
             <span class="pay-badge">
               <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="2"/><path d="M2.5 9.5h19"/></svg>
@@ -973,7 +982,7 @@
 
         <div class="faq-item">
           <button class="faq-q"><span>收費是否已經包晒，會唔會另外收費？</span><span class="plus"></span></button>
-          <div class="faq-a"><div class="faq-a-inner">每項服務均為一口價收費：車頭相及遺照修復 HK$300／張，已包括修復舊相瑕疵、整理背景、色彩校正及交付高清電子檔，過程中不會再另外收費。若相片本身有嚴重缺損，我們會先清楚說明可修復範圍，再由家屬決定是否進行。</div></div>
+          <div class="faq-a"><div class="faq-a-inner">每項服務均為一口價收費：車頭相及遺照修復 HK$300／張，已包括修復舊相瑕疵、整理背景、色彩校正、最多 3 次修改及交付高清電子檔。超出修改次數或重大變更另行收費，詳見「相片修復服務規則」。若相片本身有嚴重缺損，我們會先清楚說明可修復範圍，再由家屬決定是否進行。</div></div>
         </div>
 
         <div class="faq-item">
@@ -986,6 +995,32 @@
           <div class="faq-a"><div class="faq-a-inner">可以，每筆訂單會以港幣（HKD）結算。使用海外銀行信用卡付款，發卡銀行可能收取外幣交易手續費，有關費用需由客戶支付，詳情請聯絡發卡銀行查詢。</div></div>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" id="rules">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">服務規則</span>
+        <h2>相片修復服務規則</h2>
+        <p>為令製作過程清晰順暢，請於落單前細閱以下規則。如有任何疑問，歡迎先 WhatsApp 查詢。</p>
+      </div>
+      <div class="rules-grid reveal">
+        <div class="rule-item"><span class="rule-no">01</span><div><h3>開始製作前</h3><p>落單付款後，請提供原相（或合併相），並確認：邊位係先人（雙人／合照請指明）、彩色或黑白、背景（預設純白）、服裝（預設不改）。雙人／合照按人數計算，每位 HK$300。</p></div></div>
+        <div class="rule-item"><span class="rule-no">02</span><div><h3>草稿</h3><p>我哋會先提供草稿，供您確認整體效果同提出修改細節。</p></div></div>
+        <div class="rule-item"><span class="rule-no">03</span><div><h3>修改次數</h3><p>確認草稿及修改細節後，最多提供 3 次修改版本。第 2、3 次一律以第 1 次版本為基礎修改，唔會重新由原相再做。如想退回草稿版做底，請於提出修改時註明，並計為其中一次修改。</p></div></div>
+        <div class="rule-item"><span class="rule-no">04</span><div><h3>修改指示</h3><p>請一次過列明所有修改位置，並盡量具體（例如截圖圈出位置、註明程度，如「皺紋淡約三成」「斑點完全清除」或「淡化」），避免分多次提出而用完修改次數。</p></div></div>
+        <div class="rule-item"><span class="rule-no">05</span><div><h3>姿勢調整（雙人／合照）</h3><p>因為男女嘅身型、面型、頸長、髮型同前後位置，都會影響兩肩高低，我哋會以頭形做中心平衡點，盡量令五官喺同一水平線。如您想以兩肩一致為優先，請於草稿確認時註明，惟兩位先人頭部未必同一水平線。</p></div></div>
+        <div class="rule-item"><span class="rule-no">06</span><div><h3>最終確認</h3><p>您以文字明確回覆確認最終版本後，我哋會 email 高清電子檔（JPG）到您提供嘅電郵。確認後視為完成，不再接受修改。</p></div></div>
+        <div class="rule-item"><span class="rule-no">07</span><div><h3>超出次數</h3><p>超出 3 次後，每次修改另收 HK$150。</p></div></div>
+        <div class="rule-item"><span class="rule-no">08</span><div><h3>重大變更</h3><p>更改彩色／黑白、服裝、背景、更換髮型款式，或更換相片，視為新需求，另行安排及收費。微調髮量、分界等細節，屬一般修改。</p></div></div>
+        <div class="rule-item"><span class="rule-no">09</span><div><h3>效果說明</h3><p>修復以原相為基礎，原相解像度低、褪色或損毀嚴重會影響效果。修復未必能 100% 還原髮型、眼神等細微特徵，我哋會盡力保留五官神韻，請您於確認前仔細核對。</p></div></div>
+        <div class="rule-item"><span class="rule-no">10</span><div><h3>相片年代差異</h3><p>原相（或合併相）中嘅先人可能攝於不同年份，成品面貌未必同先人後期樣貌一致。請務必留意不同年代相片帶來嘅外觀差異，並於確認前仔細核對。</p></div></div>
+        <div class="rule-item"><span class="rule-no">11</span><div><h3>打印／瓷相</h3><p>我哋只提供電子檔修復，不包括打印、相框、瓷相或石碑製作。成品效果視乎製作商，建議先同製作店確認尺寸同格式要求。</p></div></div>
+        <div class="rule-item"><span class="rule-no">12</span><div><h3>私隱及保存期</h3><p>您提供嘅相片只用作製作用途。確認最終版本後 30 日內，我哋會喺電腦同雲端刪除製作用嘅相片檔案，請您於期間內自行保存電子檔。</p></div></div>
+        <div class="rule-item"><span class="rule-no">13</span><div><h3>回覆時間</h3><p>每次修改一個工作天內回覆。</p></div></div>
+        <div class="rule-item"><span class="rule-no">14</span><div><h3>退款</h3><p>開始製作後恕不設退款（特殊情況請聯絡我哋）。</p></div></div>
       </div>
     </div>
   </section>
