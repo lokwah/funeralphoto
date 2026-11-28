@@ -1,0 +1,9 @@
+// Cloudflare Workers（靜態網站）設定
+{
+  "name": "funeralphoto",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
