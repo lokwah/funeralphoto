@@ -5,6 +5,7 @@ import Compare from '../components/Compare.astro';
 import Payments from '../components/Payments.astro';
 import Cta from '../components/Cta.astro';
 import { SITE, PRICES, wa } from '../data/site';
+import { REVIEWS, GOOGLE_PROFILE_URL } from '../data/reviews';
 
 // 客人最常見嘅情況：有手機相，但張相唔啱做車頭相
 const cases = [
@@ -111,8 +112,18 @@ const offers = {
       <div class="section-head">
         <span class="eyebrow">客人評價</span>
         <h2>家屬嘅說話</h2>
+        <p class="lead">以下係客人喺 Google 留低嘅評價原文。</p>
       </div>
-      <div class="todo">【待補】3–5 條真實 Google 評價（原文、評價人顯示方式）、Google 星數同評價數量、Google 商家檔案連結。唔加評價 schema（Google 唔顯示商家自己放嘅評價星星）。</div>
+      <ul class="reviews">
+        {REVIEWS.map((r) => (
+          <li class="card">
+            <p class="stars" aria-label={`${r.stars} 星`}>{'★'.repeat(r.stars)}</p>
+            <blockquote>{r.text}</blockquote>
+            <p class="who">{r.name}・Google 評價・{r.when}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="more"><a href={GOOGLE_PROFILE_URL} target="_blank" rel="noopener">喺 Google 睇全部評價 →</a></p>
     </div>
   </section>
 
@@ -193,6 +204,12 @@ const offers = {
   .cases p { margin: 0; }
   .samples { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 24px; align-items: start; }
   .spec-box h3 { font-size: var(--fs-lg); }
+  .reviews { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .reviews li { display: flex; flex-direction: column; }
+  .stars { color: var(--gold); letter-spacing: 2px; margin-bottom: 8px; }
+  .reviews blockquote { margin: 0 0 16px; flex: 1; line-height: 1.9; }
+  .who { margin: 0; font-size: var(--fs-xs); color: var(--muted); }
+  @media (max-width: 900px) { .reviews { grid-template-columns: 1fr; } }
   .note { margin-top: 16px; }
   .quote { margin: 0 0 48px; padding-left: 24px; border-left: 2px solid var(--gold); font-size: var(--fs-lg); line-height: 2; color: var(--ivory); }
   .more { margin-top: 24px; }
