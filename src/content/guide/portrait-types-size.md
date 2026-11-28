@@ -2,7 +2,7 @@
 title: "車頭相、靈堂相、瓷相有咩分別？尺寸係幾多？"
 description: "車頭相、靈堂相、遺照、瓷相、石碑相嘅分別同常見尺寸，同埋點解電子檔用 3:4 比例。"
 updated: "2026-11-28"
-order: 3
+order: 4
 draft: true
 related:
   - { href: "/services/portrait/", label: "車頭相・靈堂相修復" }

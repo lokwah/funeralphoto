@@ -6,8 +6,18 @@ import Payments from '../components/Payments.astro';
 import Cta from '../components/Cta.astro';
 import { SITE, PRICES, wa } from '../data/site';
 
+// 客人最常見嘅情況：有手機相，但張相唔啱做車頭相
+const cases = [
+  { t: '只有合照，冇單人相', d: '從合照中精準裁出先人，重新構圖成 3:4 直向肖像。' },
+  { t: '背景亂，喺餐廳或旅行時影', d: '專業去背，換成素雅、莊重嘅背景（預設純白）。' },
+  { t: '衫唔夠端莊', d: '可按要求修飾衣領或改為端莊衣著，落單時講明就得。' },
+  { t: '唔係正面、頭歪、膊頭高低', d: '修正歪斜角度，平衡肩膀同頭部位置。' },
+  { t: '光暗唔夠、膚色唔自然', d: '校正色彩、光線同膚色，令容貌自然安詳。' },
+  { t: '相太細，放大會矇', d: '改善低解像度同起格，輸出 2250 × 3000 高清電子檔。' },
+];
+
 const services = [
-  { href: '/services/portrait/', title: '車頭相・靈堂相・先人相修復', price: `HK$${PRICES.single}`, unit: '一人 / 一張', text: '出殯、靈堂、訃告、石碑相或瓷相用。修復泛黃破損、合照裁出先人、整理背景，保留原有神韻。' },
+  { href: '/services/portrait/', title: '車頭相・靈堂相・先人相修復', price: `HK$${PRICES.single}`, unit: '一人 / 一張', text: '手機相、合照、舊相都可以。裁出先人、整理背景同儀容，保留原有神韻，適合出殯、靈堂、訃告、石碑相或瓷相。' },
   { href: '/services/double/', title: '雙人合葬・瓷相', price: `HK$${PRICES.double}`, unit: '雙人合照', text: '兩張單人相合成，或修復現有雙人合照。按男左女右排位，專為合葬、雙人瓷相及石碑相片而設。' },
   { href: '/services/other/', title: '其他服務', price: `HK$${PRICES.pet} 起`, unit: '', text: '香港上門長者肖像拍攝、寵物遺照修復、USB-C 隨身碟備份、喪禮悼念冊設計及製作。' },
 ];
@@ -25,19 +35,19 @@ const offers = {
 };
 ---
 <Base
-  title="香港車頭相及遺照修復服務｜先人相片高清修復｜電子檔交付"
-  description={`香港車頭相、靈堂相、先人相、石碑相、瓷相及寵物遺照專業數碼修復服務。一口價 HK$${PRICES.single}／張，雙人合葬瓷相 HK$${PRICES.double}，不另收費。保留先人神韻，交付高清電子檔。WhatsApp 傳相免費初步評估。`}
+  title={`香港車頭相及遺照修復服務｜手機相都可以｜一口價 HK$${PRICES.single}`}
+  description={`只有手機相、合照，或者背景亂、衫唔夠端莊？我哋幫你執成莊重得體嘅車頭相、靈堂相。一口價 HK$${PRICES.single}／張，雙人合葬瓷相 HK$${PRICES.double}，包最多 3 次修改，不另收費。WhatsApp 傳相免費初步評估。`}
   schema={[offers]}
 >
-  <link slot="head" rel="preload" as="image" href="/assets/video/hero-poster.jpg" fetchpriority="high" />
+  <link slot="head" rel="preload" as="image" href="/assets/samples/sample-a-after.jpg" fetchpriority="high" />
 
   <!-- HERO -->
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-text">
         <span class="eyebrow">香港車頭相 · 遺照修復</span>
-        <h1>被記住的容顏，<br /><span class="gold">值得慎重修復</span></h1>
-        <p class="lead">舊相泛黃、破損、模糊，那些年月留下的痕跡。我們細心修復，保留五官與神韻，讓莊重、慈祥、具尊嚴的容顏永久安放。</p>
+        <h1>手機相都可以，<br /><span class="gold">執成莊重得體嘅車頭相</span></h1>
+        <p class="lead">只有生活照、合照，或者張相背景亂、衫唔夠端莊？我們幫你裁出先人、整理背景與儀容，堅持保留五官與神韻。</p>
         <p class="price-line">一口價 <strong>HK${PRICES.single}</strong> / 張・雙人合葬 <strong>HK${PRICES.double}</strong>・不另收費</p>
         <div class="btn-row">
           <a class="btn btn-gold" href="/order/">點樣訂購</a>
@@ -45,18 +55,64 @@ const offers = {
         </div>
       </div>
       <div class="hero-media">
-        <video id="heroVideo" muted playsinline autoplay preload="metadata" poster="/assets/video/hero-poster.jpg" width="880" height="496" aria-label="舊相修復成莊重遺照的示範短片">
-          <source src="/assets/video/hero.mp4" type="video/mp4" />
-        </video>
+        <Compare before="/assets/samples/sample-a-before.jpg" after="/assets/samples/sample-a-after.jpg" beforeAlt="修復前：日常生活合照" afterAlt="修復後：莊重個人肖像" ratio="3/4" eager caption="左右拖曳：由日常合照，執成莊重肖像" />
       </div>
     </div>
   </section>
 
-  <!-- INTRO -->
+  <!-- 常見情況 -->
   <section class="section">
-    <div class="container narrow">
-      <blockquote class="quote">一張先人相片，不只是影像，而是家人對至親最後的記憶。我們以尖端數碼技術，配合莊重、細心及尊重的態度，修復舊相瑕疵、整理背景與儀容——同時堅持保留先人原有的五官、神韻與個人特徵，致力還原最自然、慈祥且具尊嚴的容顏。</blockquote>
-      <p class="muted small">本服務以電子檔修復為主，不設實體相片沖印、相框或石碑製作。</p>
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">常見情況</span>
+        <h2>張相唔合心水？呢啲情況我哋都處理到</h2>
+        <p class="lead">大部分家屬手上都只有手機相。唔使搵到完美嘅相，傳俾我們先，我們會話你可以點樣處理。</p>
+      </div>
+      <ul class="cases">
+        {cases.map((c) => (
+          <li class="card">
+            <h3>{c.t}</h3>
+            <p class="muted">{c.d}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="more"><a href="/guide/phone-old-photo/">只得手機相或者舊相，可唔可以修復？→</a></p>
+    </div>
+  </section>
+
+  <!-- SAMPLES -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">真實修復示範</span>
+        <h2>由日常相片，變成莊重肖像</h2>
+        <p class="lead">左右拖曳，親眼見證修復前後的分別。</p>
+      </div>
+      <div class="samples">
+        <Compare before="/assets/samples/sample-b-before.jpg" after="/assets/samples/sample-b-after.jpg" beforeAlt="修復前：家庭聚會合照" afterAlt="修復後：莊重個人肖像" ratio="3/4" caption="多人合照中精準裁出先人肖像" />
+        <Compare before="/assets/samples/sample-c-before.jpg" after="/assets/samples/sample-c-after.jpg" beforeAlt="修復前：生活隨拍" afterAlt="修復後：莊重個人肖像" ratio="3/4" caption="整理背景、校正光影，保留原有神韻" />
+        <div class="spec-box">
+          <h3>固定成品規格</h3>
+          <table class="spec">
+            <tr><th>解像度</th><td>2250 × 3000 像素</td></tr>
+            <tr><th>比例</th><td>3:4 直向</td></tr>
+            <tr><th>格式</th><td>JPG 高清電子檔</td></tr>
+            <tr><th>用途</th><td>交予殯儀館 / 沖印店 / 其他供應商</td></tr>
+          </table>
+          <p class="muted small note">我們不會擅自改變先人的五官、年齡、表情或個人神韻。如相片本身有嚴重缺損，會先清楚說明可修復範圍，再由家屬決定是否進行。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">客人評價</span>
+        <h2>家屬嘅說話</h2>
+      </div>
+      <div class="todo">【待補】3–5 條真實 Google 評價（原文、評價人顯示方式）、Google 星數同評價數量、Google 商家檔案連結。唔加評價 schema（Google 唔顯示商家自己放嘅評價星星）。</div>
     </div>
   </section>
 
@@ -70,25 +126,6 @@ const offers = {
       </div>
       <Steps />
       <p class="more"><a href="/order/">詳細訂購流程 →</a></p>
-    </div>
-  </section>
-
-  <!-- COMPARE -->
-  <section class="section">
-    <div class="container compare-grid">
-      <div>
-        <span class="eyebrow">修復效果</span>
-        <h2>由舊相到永久紀念</h2>
-        <p class="lead">左右拖曳滑桿，親眼見證修復前後的分別。</p>
-        <table class="spec">
-          <tr><th>解像度</th><td>2250 × 3000 像素（675 萬像素）</td></tr>
-          <tr><th>比例</th><td>3:4 直向</td></tr>
-          <tr><th>格式</th><td>JPG 高清電子檔</td></tr>
-          <tr><th>用途</th><td>交予殯儀館 / 沖印店 / 其他供應商</td></tr>
-        </table>
-        <p class="muted small note">我們不會擅自改變先人的五官、年齡、表情或個人神韻。如相片本身有嚴重缺損，會先清楚說明可修復範圍，再由家屬決定是否進行。</p>
-      </div>
-      <Compare before="/assets/before.jpg" after="/assets/after.jpg" beforeAlt="修復前：破損泛黃舊相" afterAlt="修復後：金框莊重遺照" ratio="1000/558" />
     </div>
   </section>
 
@@ -113,14 +150,13 @@ const offers = {
     </div>
   </section>
 
-  <!-- PAYMENT -->
+  <!-- INTRO + PAYMENT -->
   <section class="section">
-    <div class="container pay-strip">
-      <div>
-        <h2 class="h3">支援本地及海外付款</h2>
-        <p class="muted">每筆訂單以港幣（HKD）結算，一口價收費，已包最多 3 次修改，詳見<a href="/rules/">服務規則</a>。</p>
-        <Payments />
-      </div>
+    <div class="container narrow">
+      <blockquote class="quote">一張先人相片，不只是影像，而是家人對至親最後的記憶。我們以尖端數碼技術，配合莊重、細心及尊重的態度，修復相片瑕疵、整理背景與儀容——同時堅持保留先人原有的五官、神韻與個人特徵，致力還原最自然、慈祥且具尊嚴的容顏。</blockquote>
+      <h2 class="h3">支援本地及海外付款</h2>
+      <p class="muted">每筆訂單以港幣（HKD）結算，一口價收費，已包最多 3 次修改，詳見<a href="/rules/">服務規則</a>。本服務只提供電子檔，不設實體相片沖印、相框或石碑製作。</p>
+      <Payments />
     </div>
   </section>
 
@@ -129,8 +165,8 @@ const offers = {
     <div class="container grid grid-2">
       <a class="card" href="/guide/">
         <span class="eyebrow">實用指南</span>
-        <h2 class="h3">點揀相？男左女右點計？</h2>
-        <p class="muted">選相、尺寸、雙人合葬排位等常見問題，逐篇講清楚。</p>
+        <h2 class="h3">手機相得唔得？男左女右點計？</h2>
+        <p class="muted">準備相片、尺寸、雙人合葬排位等常見問題，逐篇講清楚。</p>
         <span class="go">睇實用指南 →</span>
       </a>
       <a class="card" href="/faq/">
@@ -145,33 +181,33 @@ const offers = {
   <Cta />
 </Base>
 
-<script>
-  // 減少動態效果設定：唔自動播，直接顯示最後一格
-  const v = document.getElementById('heroVideo') as HTMLVideoElement | null;
-  if (v && matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    v.removeAttribute('autoplay'); v.pause();
-    v.addEventListener('loadedmetadata', () => { v.currentTime = v.duration; }, { once: true });
-  }
-</script>
-
 <style>
-  .hero { padding: 72px 0 var(--section); border-bottom: 1px solid var(--line); }
-  .hero-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 48px; align-items: center; }
+  .hero { padding: 64px 0 var(--section); border-bottom: 1px solid var(--line); }
+  .hero-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 56px; align-items: center; }
+  .hero-media { max-width: 440px; justify-self: end; width: 100%; }
   .gold { color: var(--gold); }
   .price-line { color: var(--ivory-dim); margin-bottom: 28px; }
   .price-line strong { color: var(--gold); font-weight: 700; }
-  .hero-media video { width: 100%; aspect-ratio: 880/496; object-fit: cover; border-radius: var(--r-card); border: 1px solid var(--line); background: #000; }
-  .quote { margin: 0 0 20px; padding-left: 24px; border-left: 2px solid var(--gold); font-size: var(--fs-lg); line-height: 2; color: var(--ivory); }
+  .cases { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .cases h3 { font-size: var(--fs-lg); margin-bottom: 6px; }
+  .cases p { margin: 0; }
+  .samples { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 24px; align-items: start; }
+  .spec-box h3 { font-size: var(--fs-lg); }
+  .note { margin-top: 16px; }
+  .quote { margin: 0 0 48px; padding-left: 24px; border-left: 2px solid var(--gold); font-size: var(--fs-lg); line-height: 2; color: var(--ivory); }
   .more { margin-top: 24px; }
-  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-  .note { margin-top: 20px; }
   .svc h3 { margin-bottom: 8px; }
   .go { color: var(--gold); font-size: var(--fs-sm); }
   .h3 { font-size: var(--fs-h3); }
-  .pay-strip p { margin-bottom: 16px; }
   @media (max-width: 900px) {
-    .hero { padding-top: 40px; }
-    .hero-grid, .compare-grid { grid-template-columns: 1fr; gap: 32px; }
-    .hero-media { order: -1; }
+    .hero { padding-top: 32px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+    .hero-media { order: -1; justify-self: center; max-width: 340px; }
+    .cases { grid-template-columns: 1fr 1fr; }
+    .samples { grid-template-columns: 1fr 1fr; }
+    .spec-box { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) {
+    .cases, .samples { grid-template-columns: 1fr; }
   }
 </style>

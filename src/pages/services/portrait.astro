@@ -28,7 +28,6 @@ const tips = [
   '可從過去的旅行照、親友婚照、公司或團體合照中選取找尋',
 ];
 const samples = [
-  { b: 'a', alt: '日常生活合照', cap: '合照裁出人像，換上莊重背景' },
   { b: 'b', alt: '家庭聚會合照', cap: '多人合照中精準裁出先人肖像' },
   { b: 'c', alt: '生活隨拍', cap: '整理背景、校正光影，保留原有神韻' },
 ];
@@ -42,7 +41,7 @@ const service = {
 ---
 <Base
   title="車頭相・靈堂相・先人相修復 HK$300"
-  description={`香港車頭相、靈堂相、先人相數碼修復，一口價 HK$${PRICES.single}／張。修復泛黃破損、合照裁出先人、整理背景，交付 2250×3000 高清電子檔，最多 3 次修改。`}
+  description={`香港車頭相、靈堂相、先人相修復，一口價 HK$${PRICES.single}／張。手機相、合照、舊相都可以：裁出先人、整理背景同儀容，交付 2250×3000 高清電子檔，最多 3 次修改。`}
   crumbs={[{ label: '服務', href: '/services/portrait/' }, { label: '車頭相・靈堂相' }]}
   schema={[service]}
 >
@@ -51,14 +50,14 @@ const service = {
       <div>
         <span class="eyebrow">重點服務</span>
         <h1>車頭相・靈堂相・先人相修復</h1>
-        <p class="lead">適合用於出殯、靈堂佈置、訃告、悼念冊、製作石碑相或陶瓷相片（瓷相）、家族紀念或長久供奉之用。我們以尖端數碼技術，配合莊重、細心及尊重的態度處理每一份委託。</p>
+        <p class="lead">手機相、合照、舊相都可以處理。適合用於出殯、靈堂佈置、訃告、悼念冊、製作石碑相或陶瓷相片（瓷相）、家族紀念或長久供奉之用。我們以尖端數碼技術，配合莊重、細心及尊重的態度處理每一份委託。</p>
         <p class="price">HK${PRICES.single} <small>/ 一人 / 一張・一口價，不另收費</small></p>
         <div class="btn-row">
           <a class="btn btn-gold" href={SITE.formUrl} target="_blank" rel="noopener">網上訂購</a>
           <a class="btn btn-line" href={wa()} target="_blank" rel="noopener">WhatsApp 查詢</a>
         </div>
       </div>
-      <Compare before="/assets/before.jpg" after="/assets/after.jpg" beforeAlt="修復前：破損泛黃舊相" afterAlt="修復後：金框莊重遺照" ratio="1000/558" eager />
+      <div class="hero-cmp"><Compare before="/assets/samples/sample-a-before.jpg" after="/assets/samples/sample-a-after.jpg" beforeAlt="修復前：日常生活合照" afterAlt="修復後：莊重個人肖像" ratio="3/4" eager caption="合照裁出人像，換上莊重背景" /></div>
     </div>
   </section>
 
@@ -89,10 +88,27 @@ const service = {
         <h2>由日常相片，變成莊重肖像</h2>
         <p class="lead">左右拖曳，親眼見證我們如何由生活相片，修復成莊重得體的個人肖像。</p>
       </div>
-      <div class="grid grid-3">
+      <div class="grid grid-2 two">
         {samples.map((s) => (
           <Compare before={`/assets/samples/sample-${s.b}-before.jpg`} after={`/assets/samples/sample-${s.b}-after.jpg`} beforeAlt={`修復前：${s.alt}`} afterAlt="修復後：莊重個人肖像" caption={s.cap} ratio="3/4" />
         ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="old-photo">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">舊相修復</span>
+        <h2>泛黃、破損、模糊嘅舊相</h2>
+        <p>舊相泛黃、褪色、污漬、摺痕及輕微破損，都可以修復；黑白相片亦可色彩還原。過程中不會擅自改變先人的五官、年齡或個人特徵。</p>
+        <p class="muted small">如只持有實體舊相，可自行用彩色模式、600 DPI 或以上掃描後傳送，或查詢由我們代為翻拍／掃描（另收行政費）。</p>
+      </div>
+      <div>
+        <video id="oldVideo" muted playsinline preload="none" poster="/assets/video/hero-poster.jpg" width="880" height="496" controls aria-label="舊相修復成莊重遺照的示範短片">
+          <source src="/assets/video/hero.mp4" type="video/mp4" />
+        </video>
+        <div class="mt"><Compare before="/assets/before.jpg" after="/assets/after.jpg" beforeAlt="修復前：破損泛黃舊相" afterAlt="修復後：金框莊重遺照" ratio="1000/558" /></div>
       </div>
     </div>
   </section>
@@ -123,5 +139,8 @@ const service = {
   .split > :first-child { align-self: center; }
   .price { margin: 8px 0 24px; }
   .mt { margin-top: 20px; }
+  .hero-cmp { max-width: 420px; justify-self: center; width: 100%; }
+  .two { max-width: 760px; }
+  video { width: 100%; border-radius: var(--r-card); border: 1px solid var(--line); background: #000; }
   @media (max-width: 900px) { .split { grid-template-columns: 1fr; gap: 32px; } }
 </style>

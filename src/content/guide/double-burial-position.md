@@ -2,7 +2,7 @@
 title: "雙人合葬相：男左女右點計？"
 description: "雙人合葬相、雙人瓷相嘅排位：男左女右係以先人視角計，面向墓碑時男右女左，同埋相片唔啱規格點處理。"
 updated: "2026-11-28"
-order: 2
+order: 3
 draft: true
 related:
   - { href: "/services/double/", label: "雙人合葬・瓷相" }

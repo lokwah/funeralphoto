@@ -2,7 +2,7 @@
 title: "只得手機相或者舊相，可唔可以修復？"
 description: "只有手機相、WhatsApp 相、實體舊相都可以修復；點樣傳原檔、點樣掃描舊相先有最好效果。"
 updated: "2026-11-28"
-order: 4
+order: 1
 draft: true
 related:
   - { href: "/services/portrait/", label: "車頭相・靈堂相修復" }
