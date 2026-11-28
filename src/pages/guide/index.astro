@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cta from '../../components/Cta.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('guide')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base
+  title="實用指南"
+  description="車頭相、靈堂相、雙人合葬瓷相實用指南：點揀相、男左女右點計、尺寸分別、手機相同舊相點處理、背景衣服皺紋點調整。"
+  crumbs={[{ label: '實用指南' }]}
+>
+  <section class="section first">
+    <div class="container narrow">
+      <div class="section-head">
+        <span class="eyebrow">實用指南</span>
+        <h1>準備先人相片，你需要知道嘅事</h1>
+        <p class="lead">每篇答一條家屬最常問嘅問題。</p>
+      </div>
+      <ul class="posts">
+        {posts.map((p) => (
+          <li>
+            <a class="card" href={`/guide/${p.id}/`}>
+              <h2 class="h3">{p.data.title}</h2>
+              <p class="muted">{p.data.description}</p>
+              <span class="meta">{p.data.draft ? '撰寫中' : `更新：${p.data.updated}`}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+  <Cta />
+</Base>
+
+<style>
+  .first { padding-top: 40px; }
+  .posts { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+  .h3 { font-size: var(--fs-h3); margin-bottom: 6px; }
+  .posts p { margin-bottom: 8px; }
+  .meta { font-size: var(--fs-xs); color: var(--gold); }
+</style>

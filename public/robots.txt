@@ -1,0 +1,5 @@
+# 歡迎所有搜尋器同 AI 爬蟲（GEO）
+User-agent: *
+Allow: /
+
+Sitemap: https://www.funeralphoto.com.hk/sitemap-index.xml

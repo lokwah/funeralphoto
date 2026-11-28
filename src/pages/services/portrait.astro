@@ -1,0 +1,127 @@
+---
+import Base from '../../layouts/Base.astro';
+import Compare from '../../components/Compare.astro';
+import FaqList from '../../components/FaqList.astro';
+import Cta from '../../components/Cta.astro';
+import { SITE, PRICES, wa } from '../../data/site';
+import { faqByGroup } from '../../data/faq';
+
+const scope = [
+  '修復舊相泛黃、褪色、污漬、摺痕及輕微破損',
+  '改善模糊、低解像度及放大後的起格情況',
+  '從多人合照中裁出先人肖像',
+  '修正原相歪斜的角度',
+  '透過人工智能輔助還原先人青春時期',
+  '修補皺紋、閉眼、調整眼神並保留先人容貌神韻',
+  '整理雜亂背景，專業去背，換成素雅、莊重背景',
+  '校正色彩、光線、角度及構圖',
+  '修飾衣領、髮型及不影響容貌辨識的細節',
+  '黑白相片色彩還原',
+];
+const tips = [
+  '五官清晰，面部沒有被頭髮、手或物件遮擋',
+  '表情自然、精神安詳，正面或微側面均可',
+  '原始檔案越大越好，避免多次經 WhatsApp 轉傳的壓縮圖片',
+  '人物與背景、頭髮與衣服顏色有足夠對比，較易裁切及修復',
+  '如有兩至三張候選相片，可一併傳送供我們提供建議',
+  '合照亦可處理，但人物比例、光線及遮擋情況會影響效果',
+  '可從過去的旅行照、親友婚照、公司或團體合照中選取找尋',
+];
+const samples = [
+  { b: 'a', alt: '日常生活合照', cap: '合照裁出人像，換上莊重背景' },
+  { b: 'b', alt: '家庭聚會合照', cap: '多人合照中精準裁出先人肖像' },
+  { b: 'c', alt: '生活隨拍', cap: '整理背景、校正光影，保留原有神韻' },
+];
+const faqs = [...faqByGroup('photos'), ...faqByGroup('production')];
+const service = {
+  '@context': 'https://schema.org', '@type': 'Service',
+  name: '車頭相・靈堂相・先人相修復', serviceType: '遺照數碼修復',
+  provider: { '@id': `${SITE.url}/#business` }, areaServed: 'Hong Kong',
+  offers: { '@type': 'Offer', price: String(PRICES.single), priceCurrency: 'HKD', description: '一人一張，一口價，包最多 3 次修改' },
+};
+---
+<Base
+  title="車頭相・靈堂相・先人相修復 HK$300"
+  description={`香港車頭相、靈堂相、先人相數碼修復，一口價 HK$${PRICES.single}／張。修復泛黃破損、合照裁出先人、整理背景，交付 2250×3000 高清電子檔，最多 3 次修改。`}
+  crumbs={[{ label: '服務', href: '/services/portrait/' }, { label: '車頭相・靈堂相' }]}
+  schema={[service]}
+>
+  <section class="section first">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">重點服務</span>
+        <h1>車頭相・靈堂相・先人相修復</h1>
+        <p class="lead">適合用於出殯、靈堂佈置、訃告、悼念冊、製作石碑相或陶瓷相片（瓷相）、家族紀念或長久供奉之用。我們以尖端數碼技術，配合莊重、細心及尊重的態度處理每一份委託。</p>
+        <p class="price">HK${PRICES.single} <small>/ 一人 / 一張・一口價，不另收費</small></p>
+        <div class="btn-row">
+          <a class="btn btn-gold" href={SITE.formUrl} target="_blank" rel="noopener">網上訂購</a>
+          <a class="btn btn-line" href={wa()} target="_blank" rel="noopener">WhatsApp 查詢</a>
+        </div>
+      </div>
+      <Compare before="/assets/before.jpg" after="/assets/after.jpg" beforeAlt="修復前：破損泛黃舊相" afterAlt="修復後：金框莊重遺照" ratio="1000/558" eager />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div>
+        <h2>服務範圍</h2>
+        <ul class="check-list">{scope.map((s) => <li>{s}</li>)}</ul>
+      </div>
+      <div>
+        <h2>成品規格</h2>
+        <table class="spec">
+          <tr><th>解像度</th><td>2250 × 3000 像素（675 萬像素）</td></tr>
+          <tr><th>比例</th><td>3:4 直向</td></tr>
+          <tr><th>格式</th><td>JPG 高清電子檔</td></tr>
+          <tr><th>用途</th><td>交予殯儀館 / 沖印店 / 其他供應商</td></tr>
+        </table>
+        <p class="muted small mt">請於下單前先向殯儀館、禮儀公司或印刷供應商確認，喪禮中使用的遺照或車頭相的尺寸一般為 15 吋。不同供應商的實體製作要求可能不同。</p>
+        <p class="muted small">本服務以處理電子檔為主，建議提供相機、手機原檔、未壓縮檔案或掃描檔，以保留更多修復細節。如只持有實體舊相，本公司可代為安排翻拍或掃描，另收行政費用。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">真實修復示範</span>
+        <h2>由日常相片，變成莊重肖像</h2>
+        <p class="lead">左右拖曳，親眼見證我們如何由生活相片，修復成莊重得體的個人肖像。</p>
+      </div>
+      <div class="grid grid-3">
+        {samples.map((s) => (
+          <Compare before={`/assets/samples/sample-${s.b}-before.jpg`} after={`/assets/samples/sample-${s.b}-after.jpg`} beforeAlt={`修復前：${s.alt}`} afterAlt="修復後：莊重個人肖像" caption={s.cap} ratio="3/4" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <span class="eyebrow">選相建議</span>
+      <h2>如何挑選合適的先人相片？</h2>
+      <ul class="check-list">{tips.map((t) => <li>{t}</li>)}</ul>
+      <p class="mt"><a href="/guide/">更多選相同製作指南 →</a></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <h2>相關問題</h2>
+      <FaqList items={faqs} />
+      <p class="mt"><a href="/faq/">全部常見問題 →</a>　<a href="/rules/">服務規則 →</a></p>
+    </div>
+  </section>
+
+  <Cta />
+</Base>
+
+<style>
+  .first { padding-top: 40px; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .split > :first-child { align-self: center; }
+  .price { margin: 8px 0 24px; }
+  .mt { margin-top: 20px; }
+  @media (max-width: 900px) { .split { grid-template-columns: 1fr; gap: 32px; } }
+</style>

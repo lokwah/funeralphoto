@@ -1,0 +1,177 @@
+---
+import Base from '../layouts/Base.astro';
+import Steps from '../components/Steps.astro';
+import Compare from '../components/Compare.astro';
+import Payments from '../components/Payments.astro';
+import Cta from '../components/Cta.astro';
+import { SITE, PRICES, wa } from '../data/site';
+
+const services = [
+  { href: '/services/portrait/', title: '車頭相・靈堂相・先人相修復', price: `HK$${PRICES.single}`, unit: '一人 / 一張', text: '出殯、靈堂、訃告、石碑相或瓷相用。修復泛黃破損、合照裁出先人、整理背景，保留原有神韻。' },
+  { href: '/services/double/', title: '雙人合葬・瓷相', price: `HK$${PRICES.double}`, unit: '雙人合照', text: '兩張單人相合成，或修復現有雙人合照。按男左女右排位，專為合葬、雙人瓷相及石碑相片而設。' },
+  { href: '/services/other/', title: '其他服務', price: `HK$${PRICES.pet} 起`, unit: '', text: '香港上門長者肖像拍攝、寵物遺照修復、USB-C 隨身碟備份、喪禮悼念冊設計及製作。' },
+];
+
+const offers = {
+  '@context': 'https://schema.org',
+  '@id': `${SITE.url}/#business`,
+  makesOffer: [
+    { '@type': 'Offer', name: '車頭相・靈堂相・先人相修復', price: String(PRICES.single), priceCurrency: 'HKD', url: `${SITE.url}/services/portrait/` },
+    { '@type': 'Offer', name: '雙人先人瓷相（合葬用）修復及合成', price: String(PRICES.double), priceCurrency: 'HKD', url: `${SITE.url}/services/double/` },
+    { '@type': 'Offer', name: '香港上門長者肖像拍攝', price: String(PRICES.elder), priceCurrency: 'HKD', url: `${SITE.url}/services/other/` },
+    { '@type': 'Offer', name: '寵物遺照及紀念相片修復', price: String(PRICES.pet), priceCurrency: 'HKD', url: `${SITE.url}/services/other/` },
+    { '@type': 'Offer', name: 'USB-C 雙插頭隨身碟備份', price: String(PRICES.usb), priceCurrency: 'HKD', url: `${SITE.url}/services/other/` },
+  ],
+};
+---
+<Base
+  title="香港車頭相及遺照修復服務｜先人相片高清修復｜電子檔交付"
+  description={`香港車頭相、靈堂相、先人相、石碑相、瓷相及寵物遺照專業數碼修復服務。一口價 HK$${PRICES.single}／張，雙人合葬瓷相 HK$${PRICES.double}，不另收費。保留先人神韻，交付高清電子檔。WhatsApp 傳相免費初步評估。`}
+  schema={[offers]}
+>
+  <link slot="head" rel="preload" as="image" href="/assets/video/hero-poster.jpg" fetchpriority="high" />
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <span class="eyebrow">香港車頭相 · 遺照修復</span>
+        <h1>被記住的容顏，<br /><span class="gold">值得慎重修復</span></h1>
+        <p class="lead">舊相泛黃、破損、模糊，那些年月留下的痕跡。我們細心修復，保留五官與神韻，讓莊重、慈祥、具尊嚴的容顏永久安放。</p>
+        <p class="price-line">一口價 <strong>HK${PRICES.single}</strong> / 張・雙人合葬 <strong>HK${PRICES.double}</strong>・不另收費</p>
+        <div class="btn-row">
+          <a class="btn btn-gold" href="/order/">點樣訂購</a>
+          <a class="btn btn-line" href={wa()} target="_blank" rel="noopener">WhatsApp 免費初步評估</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <video id="heroVideo" muted playsinline autoplay preload="metadata" poster="/assets/video/hero-poster.jpg" width="880" height="496" aria-label="舊相修復成莊重遺照的示範短片">
+          <source src="/assets/video/hero.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="section">
+    <div class="container narrow">
+      <blockquote class="quote">一張先人相片，不只是影像，而是家人對至親最後的記憶。我們以尖端數碼技術，配合莊重、細心及尊重的態度，修復舊相瑕疵、整理背景與儀容——同時堅持保留先人原有的五官、神韻與個人特徵，致力還原最自然、慈祥且具尊嚴的容顏。</blockquote>
+      <p class="muted small">本服務以電子檔修復為主，不設實體相片沖印、相框或石碑製作。</p>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">修復流程</span>
+        <h2>由選相到交付，三個步驟</h2>
+        <p class="lead">整個流程清晰透明，家屬每一步都可以掌握進度，毋須擔心額外收費或延誤。</p>
+      </div>
+      <Steps />
+      <p class="more"><a href="/order/">詳細訂購流程 →</a></p>
+    </div>
+  </section>
+
+  <!-- COMPARE -->
+  <section class="section">
+    <div class="container compare-grid">
+      <div>
+        <span class="eyebrow">修復效果</span>
+        <h2>由舊相到永久紀念</h2>
+        <p class="lead">左右拖曳滑桿，親眼見證修復前後的分別。</p>
+        <table class="spec">
+          <tr><th>解像度</th><td>2250 × 3000 像素（675 萬像素）</td></tr>
+          <tr><th>比例</th><td>3:4 直向</td></tr>
+          <tr><th>格式</th><td>JPG 高清電子檔</td></tr>
+          <tr><th>用途</th><td>交予殯儀館 / 沖印店 / 其他供應商</td></tr>
+        </table>
+        <p class="muted small note">我們不會擅自改變先人的五官、年齡、表情或個人神韻。如相片本身有嚴重缺損，會先清楚說明可修復範圍，再由家屬決定是否進行。</p>
+      </div>
+      <Compare before="/assets/before.jpg" after="/assets/after.jpg" beforeAlt="修復前：破損泛黃舊相" afterAlt="修復後：金框莊重遺照" ratio="1000/558" />
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">服務項目</span>
+        <h2>一口價收費，清楚透明</h2>
+        <p class="lead">由車頭相、靈堂相到雙人合葬相，統一以莊重態度處理，保留原有神韻。</p>
+      </div>
+      <div class="grid grid-3">
+        {services.map((s) => (
+          <a class="card svc" href={s.href}>
+            <h3>{s.title}</h3>
+            <p class="price">{s.price} {s.unit && <small>/ {s.unit}</small>}</p>
+            <p class="muted">{s.text}</p>
+            <span class="go">了解更多 →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PAYMENT -->
+  <section class="section">
+    <div class="container pay-strip">
+      <div>
+        <h2 class="h3">支援本地及海外付款</h2>
+        <p class="muted">每筆訂單以港幣（HKD）結算，一口價收費，已包最多 3 次修改，詳見<a href="/rules/">服務規則</a>。</p>
+        <Payments />
+      </div>
+    </div>
+  </section>
+
+  <!-- GUIDE / FAQ -->
+  <section class="section">
+    <div class="container grid grid-2">
+      <a class="card" href="/guide/">
+        <span class="eyebrow">實用指南</span>
+        <h2 class="h3">點揀相？男左女右點計？</h2>
+        <p class="muted">選相、尺寸、雙人合葬排位等常見問題，逐篇講清楚。</p>
+        <span class="go">睇實用指南 →</span>
+      </a>
+      <a class="card" href="/faq/">
+        <span class="eyebrow">常見問題</span>
+        <h2 class="h3">落單前，你可能想知道</h2>
+        <p class="muted">收費、付款、準備相片、交付方式，一次過答你。</p>
+        <span class="go">睇常見問題 →</span>
+      </a>
+    </div>
+  </section>
+
+  <Cta />
+</Base>
+
+<script>
+  // 減少動態效果設定：唔自動播，直接顯示最後一格
+  const v = document.getElementById('heroVideo') as HTMLVideoElement | null;
+  if (v && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    v.removeAttribute('autoplay'); v.pause();
+    v.addEventListener('loadedmetadata', () => { v.currentTime = v.duration; }, { once: true });
+  }
+</script>
+
+<style>
+  .hero { padding: 72px 0 var(--section); border-bottom: 1px solid var(--line); }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 48px; align-items: center; }
+  .gold { color: var(--gold); }
+  .price-line { color: var(--ivory-dim); margin-bottom: 28px; }
+  .price-line strong { color: var(--gold); font-weight: 700; }
+  .hero-media video { width: 100%; aspect-ratio: 880/496; object-fit: cover; border-radius: var(--r-card); border: 1px solid var(--line); background: #000; }
+  .quote { margin: 0 0 20px; padding-left: 24px; border-left: 2px solid var(--gold); font-size: var(--fs-lg); line-height: 2; color: var(--ivory); }
+  .more { margin-top: 24px; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .note { margin-top: 20px; }
+  .svc h3 { margin-bottom: 8px; }
+  .go { color: var(--gold); font-size: var(--fs-sm); }
+  .h3 { font-size: var(--fs-h3); }
+  .pay-strip p { margin-bottom: 16px; }
+  @media (max-width: 900px) {
+    .hero { padding-top: 40px; }
+    .hero-grid, .compare-grid { grid-template-columns: 1fr; gap: 32px; }
+    .hero-media { order: -1; }
+  }
+</style>

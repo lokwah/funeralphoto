@@ -1,0 +1,104 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { SITE } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** 麵包屑，例如 [{ label: '服務', href: '/services/portrait/' }] ；首頁唔使 */
+  crumbs?: { label: string; href?: string }[];
+  /** 額外 JSON-LD（每頁自己嘅 schema） */
+  schema?: object[];
+  updated?: string;
+  noindex?: boolean;
+  ogImage?: string;
+}
+
+const { title, description, crumbs, schema = [], updated = SITE.updated, noindex = false, ogImage = SITE.ogImage } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const fullTitle = Astro.url.pathname === '/' ? title : `${title}｜${SITE.name}`;
+
+// 全站：公司 + 本地商戶資料（同 Google 商家檔案保持一致）
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['Organization', 'LocalBusiness'],
+  '@id': `${SITE.url}/#business`,
+  name: SITE.name,
+  legalName: SITE.company,
+  url: `${SITE.url}/`,
+  logo: `${SITE.url}/assets/favicon/android-chrome-512x512.png`,
+  image: `${SITE.url}${SITE.ogImage}`,
+  description: '香港車頭相、靈堂相、先人相、石碑相、瓷相及寵物遺照專業數碼修復服務，一口價收費，交付高清電子檔。',
+  areaServed: { '@type': 'City', name: 'Hong Kong' },
+  telephone: SITE.phone,
+  email: SITE.email,
+  priceRange: 'HK$300 - HK$1000',
+};
+const websiteSchema = { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE.name, url: `${SITE.url}/`, inLanguage: 'zh-HK' };
+const webpageSchema = {
+  '@context': 'https://schema.org', '@type': 'WebPage', name: fullTitle, url: canonical,
+  dateModified: updated, inLanguage: 'zh-HK', isPartOf: { '@id': `${SITE.url}/#website` },
+};
+const fontHref = 'https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;700&display=swap';
+---
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+<!-- Google tag (GTM-K87JX333)：Google 官方 snippet，放喺 <head> 最前 -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-K87JX333"></script>
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+<link rel="canonical" href={canonical} />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={new URL(ogImage, SITE.url).href} />
+<meta property="og:locale" content="zh_HK" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#0a0906" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- 字型唔阻住頁面顯示：先用系統字，載完再換 -->
+<link rel="stylesheet" href={fontHref} media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href={fontHref} /></noscript>
+<slot name="head" />
+<script type="application/ld+json" set:html={JSON.stringify({ ...websiteSchema, '@id': `${SITE.url}/#website` })} />
+<script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(webpageSchema)} />
+{schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要內容</a>
+  <Header />
+  <main id="main">
+    {crumbs && <Breadcrumb items={crumbs} />}
+    <slot />
+  </main>
+  <Footer updated={updated} />
+  <MobileBar />
+</body>
+</html>
+
+<style is:global>
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: 12px; top: 12px; z-index: 100; background: var(--gold); color: var(--bg); padding: 8px 16px; border-radius: 999px; }
+</style>

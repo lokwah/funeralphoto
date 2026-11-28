@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import FaqList from '../components/FaqList.astro';
+import Cta from '../components/Cta.astro';
+import { FAQ } from '../data/faq';
+
+const groups = FAQ.filter((g) => g.items.length);
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: groups.flatMap((g) => g.items).map((f) => ({
+    '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+<Base
+  title="常見問題"
+  description="車頭相及遺照修復常見問題：收費同付款、服務範圍、準備相片、製作要求、雙人合葬瓷相、交付流程。"
+  crumbs={[{ label: '常見問題' }]}
+  schema={[faqSchema]}
+>
+  <section class="section first">
+    <div class="container narrow">
+      <div class="section-head">
+        <span class="eyebrow">常見問題</span>
+        <h1>落單前，你可能想知道</h1>
+        <p class="lead">搵唔到答案？歡迎 WhatsApp 查詢，我們會於一個工作天內回覆。</p>
+      </div>
+      <nav class="jump" aria-label="問題分類">
+        {groups.map((g) => <a class="tag" href={`#${g.id}`}>{g.title}</a>)}
+      </nav>
+      {groups.map((g) => (
+        <section class="group" id={g.id}>
+          <h2>{g.title}</h2>
+          <FaqList items={g.items} />
+        </section>
+      ))}
+      <div class="todo">【待補】按 WhatsApp 客人真實問題補充：付款方式細節、草稿及修改時間、急件、背景／衣服選擇、交付電郵、售後（Google 評價）等。</div>
+    </div>
+  </section>
+  <Cta />
+</Base>
+
+<style>
+  .first { padding-top: 40px; }
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
+  .jump a { text-decoration: none; }
+  .jump a:hover { border-color: var(--gold); color: var(--gold); }
+  .group { margin-bottom: 56px; scroll-margin-top: 90px; }
+  .group h2 { font-size: var(--fs-h3); color: var(--gold); margin-bottom: 8px; }
+</style>

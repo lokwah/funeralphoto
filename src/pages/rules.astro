@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import Cta from '../components/Cta.astro';
+import { RULES } from '../data/rules';
+import { wa } from '../data/site';
+---
+<Base
+  title="相片修復服務規則"
+  description="車頭相及遺照修復服務規則：草稿、最多 3 次修改、超出收費、重大變更、私隱及保存期、退款安排。落單前請細閱。"
+  crumbs={[{ label: '服務規則' }]}
+>
+  <section class="section first">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">服務規則</span>
+        <h1>相片修復服務規則</h1>
+        <p class="lead">為令製作過程清晰順暢，請於落單前細閱以下規則。如有任何疑問，歡迎先 <a href={wa()} target="_blank" rel="noopener">WhatsApp 查詢</a>。</p>
+      </div>
+      <ol class="rules">
+        {RULES.map((r, i) => (
+          <li class="card">
+            <span class="num">{String(i + 1).padStart(2, '0')}</span>
+            <h2 class="h3">{r.title}</h2>
+            <p>{r.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+  <Cta />
+</Base>
+
+<style>
+  .first { padding-top: 40px; }
+  .rules { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .num { color: var(--gold); font-weight: 500; font-size: var(--fs-sm); }
+  .h3 { font-size: var(--fs-lg); margin: 4px 0 8px; }
+  .rules p { color: var(--ivory-dim); margin: 0; }
+  @media (max-width: 760px) { .rules { grid-template-columns: 1fr; } }
+</style>

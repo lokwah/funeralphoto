@@ -1,0 +1,21 @@
+---
+const items = [
+  { label: 'VISA', svg: '<rect x="2.5" y="5.5" width="19" height="13" rx="2"/><path d="M2.5 9.5h19"/>' },
+  { label: 'Mastercard', svg: '<circle cx="9.5" cy="12" r="6.2"/><circle cx="14.5" cy="12" r="6.2"/>' },
+  { label: 'PayPal', svg: '<path d="M7 4h6.5a4 4 0 0 1 0 8H9l-1.2 8"/><path d="M9.5 8.5H15a4 4 0 0 1 0 8h-3.8"/>' },
+  { label: 'PayMe', svg: '<rect x="6.5" y="2.5" width="11" height="19" rx="2.2"/><path d="M6.5 18h11"/>' },
+  { label: '轉數快 FPS', svg: '<path d="M4 12a8 8 0 0 1 13.6-5.7L20 8.7"/><path d="M20 4v4.7h-4.7"/><path d="M20 12a8 8 0 0 1-13.6 5.7L4 15.3"/><path d="M4 20v-4.7h4.7"/>' },
+  { label: '銀行過數', svg: '<path d="M3 9.5 12 4l9 5.5"/><path d="M4.5 9.5v9M9 9.5v9M15 9.5v9M19.5 9.5v9"/><path d="M3 18.5h18"/>' },
+];
+---
+<ul class="pay" aria-label="付款方式">
+  {items.map((i) => (
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={i.svg} />{i.label}</li>
+  ))}
+</ul>
+
+<style>
+  .pay { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  li { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: var(--fs-sm); color: var(--ivory-dim); }
+  svg { width: 18px; height: 18px; }
+</style>

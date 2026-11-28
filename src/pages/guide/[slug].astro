@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cta from '../../components/Cta.astro';
+import { getCollection, render } from 'astro:content';
+import { SITE } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('guide');
+  return posts.map((p) => ({ params: { slug: p.id }, props: { post: p } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const d = post.data;
+const article = {
+  '@context': 'https://schema.org', '@type': 'Article',
+  headline: d.title, description: d.description, dateModified: d.updated, inLanguage: 'zh-HK',
+  author: { '@id': `${SITE.url}/#business` }, publisher: { '@id': `${SITE.url}/#business` },
+  mainEntityOfPage: new URL(`/guide/${post.id}/`, SITE.url).href,
+};
+---
+<Base
+  title={d.title}
+  description={d.description}
+  crumbs={[{ label: '實用指南', href: '/guide/' }, { label: d.title }]}
+  schema={d.draft ? [] : [article]}
+  updated={d.updated}
+  noindex={d.draft}
+>
+  <article class="section first">
+    <div class="container narrow">
+      <span class="eyebrow">實用指南</span>
+      <h1>{d.title}</h1>
+      <p class="byline muted">{SITE.company}・更新：<time datetime={d.updated}>{d.updated}</time></p>
+      <div class:list={['prose', { draft: d.draft }]}><Content /></div>
+      {d.related.length > 0 && (
+        <aside class="related">
+          <h2>相關</h2>
+          <ul>{d.related.map((r) => <li><a href={r.href}>{r.label} →</a></li>)}</ul>
+        </aside>
+      )}
+    </div>
+  </article>
+  <Cta />
+</Base>
+
+<style>
+  .first { padding-top: 40px; }
+  .byline { font-size: var(--fs-sm); margin-bottom: 32px; }
+  .prose :global(h2) { font-size: var(--fs-h3); margin-top: 40px; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 1.4em; }
+  .prose :global(li) { margin-bottom: 6px; }
+  .prose.draft :global(blockquote) { margin: 0; border: 1px dashed var(--gold); border-radius: var(--r-card); padding: 16px 20px; color: var(--gold-bright); font-size: var(--fs-sm); }
+  .prose.draft :global(blockquote p) { margin: 0; }
+  .related { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); }
+  .related h2 { font-size: var(--fs-lg); }
+  .related ul { list-style: none; padding: 0; margin: 0; }
+</style>

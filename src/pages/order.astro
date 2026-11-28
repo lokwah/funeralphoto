@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import Steps from '../components/Steps.astro';
+import Payments from '../components/Payments.astro';
+import { SITE, PRICES, wa } from '../data/site';
+---
+<Base
+  title="點樣訂購"
+  description={`訂購車頭相及遺照修復：WhatsApp 傳相免費初步評估，網上落單付款，一口價 HK$${PRICES.single}／張，雙人合葬 HK$${PRICES.double}。接受 VISA、Mastercard、PayPal、PayMe、FPS 及銀行過數。`}
+  crumbs={[{ label: '點樣訂購' }]}
+>
+  <section class="section first">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">點樣訂購</span>
+        <h1>由選相到交付，三個步驟</h1>
+        <p class="lead">先 WhatsApp 傳相免費評估，確認後網上落單。一口價 HK${PRICES.single}／張，雙人合葬 HK${PRICES.double}，不另收費。</p>
+        <div class="btn-row">
+          <a class="btn btn-gold" href={SITE.formUrl} target="_blank" rel="noopener">網上訂購表格</a>
+          <a class="btn btn-line" href={wa()} target="_blank" rel="noopener">WhatsApp 免費初步評估</a>
+        </div>
+      </div>
+      <Steps />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <h2>付款方式</h2>
+      <p class="muted">每筆訂單以港幣（HKD）結算，一口價收費，已包最多 3 次修改。</p>
+      <Payments />
+      <p class="mt">落單前請細閱 <a href="/rules/">相片修復服務規則</a>。</p>
+      <div class="todo">【待補】改成 4 步流程；註明原相用 WhatsApp「文件／HD」或 email 傳送（避免壓縮）；指明以邊張相嘅樣貌為準；雙人左右位置；背景選擇；急件安排。</div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .first { padding-top: 40px; }
+  .btn-row { margin-top: 24px; }
+  .mt { margin-top: 24px; }
+  .todo { margin-top: 32px; }
+</style>

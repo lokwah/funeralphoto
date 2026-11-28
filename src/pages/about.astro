@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import Cta from '../components/Cta.astro';
+import { SITE } from '../data/site';
+---
+<Base
+  title="關於我哋"
+  description={`${SITE.name}由 ${SITE.company} 營運，專注車頭相、靈堂相及先人相片數碼修復，堅持保留先人原有五官與神韻。`}
+  crumbs={[{ label: '關於我哋' }]}
+>
+  <section class="section first">
+    <div class="container narrow">
+      <span class="eyebrow">關於我哋</span>
+      <h1>{SITE.name}</h1>
+      <p class="lead">由 {SITE.company} 營運。</p>
+      <blockquote class="quote">一張先人相片，不只是影像，而是家人對至親最後的記憶。我們以尖端數碼技術，配合莊重、細心及尊重的態度，修復舊相瑕疵、整理背景與儀容——同時堅持保留先人原有的五官、神韻與個人特徵，致力還原最自然、慈祥且具尊嚴的容顏。</blockquote>
+
+      <h2>保留神韻原則</h2>
+      <p>我們不會擅自改變先人的五官、年齡、表情或個人神韻。如相片本身有嚴重缺損，會先清楚說明可修復範圍，再由家屬決定是否進行。</p>
+
+      <h2>私隱</h2>
+      <p>您提供嘅相片只用作製作用途。確認最終版本後 30 日內，我哋會喺電腦同雲端刪除製作用嘅相片檔案。</p>
+
+      <h2>服務範圍</h2>
+      <p>本服務以電子檔修復為主，不設實體相片沖印、相框或石碑製作。</p>
+
+      <div class="todo">【待補】公司背景、點樣做（修復方法、人手把關）、點解可信（經驗、客人評價／Google 商家檔案連結）、服務時間。</div>
+    </div>
+  </section>
+  <Cta />
+</Base>
+
+<style>
+  .first { padding-top: 40px; }
+  .quote { margin: 24px 0 48px; padding-left: 24px; border-left: 2px solid var(--gold); font-size: var(--fs-lg); line-height: 2; }
+  h2 { font-size: var(--fs-h3); margin-top: 40px; }
+  .todo { margin-top: 40px; }
+</style>

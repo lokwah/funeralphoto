@@ -1,0 +1,71 @@
+---
+// 修復前後對比：拖曳滑桿（鍵盤亦可用）
+interface Props {
+  before: string; after: string; beforeAlt: string; afterAlt: string;
+  ratio?: string;            // 例如 '4/5'、'16/9'
+  vertical?: boolean;        // true = 上下拖
+  caption?: string;
+  eager?: boolean;
+}
+const { before, after, beforeAlt, afterAlt, ratio = '4/5', vertical = false, caption, eager = false } = Astro.props;
+---
+<figure class="cmp-fig">
+  <div class:list={['cmp', { vertical }]} style={`aspect-ratio:${ratio}; --pos:50%`} data-compare>
+    <img src={after} alt={afterAlt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    <div class="before"><img src={before} alt={beforeAlt} loading={eager ? 'eager' : 'lazy'} decoding="async" /></div>
+    <span class="lbl l1">修復前</span><span class="lbl l2">修復後</span>
+    <div class="handle" aria-hidden="true"><span></span></div>
+    <input type="range" min="0" max="100" value="50" aria-label={vertical ? '上下拖曳比較修復前後' : '左右拖曳比較修復前後'} />
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-compare]').forEach((el) => {
+    const input = el.querySelector('input') as HTMLInputElement;
+    const set = (v: number) => el.style.setProperty('--pos', `${Math.max(0, Math.min(100, v))}%`);
+    input.addEventListener('input', () => set(+input.value));
+    const vertical = el.classList.contains('vertical');
+    let dragging = false;
+    const move = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      const v = vertical ? ((e.clientY - r.top) / r.height) * 100 : ((e.clientX - r.left) / r.width) * 100;
+      input.value = String(Math.round(v)); set(v);
+    };
+    el.addEventListener('pointerdown', (e) => {
+      // 手機：只喺手柄附近先拖，唔阻住頁面捲動
+      const r = el.getBoundingClientRect();
+      const pos = parseFloat(getComputedStyle(el).getPropertyValue('--pos'));
+      const near = vertical ? Math.abs(e.clientY - (r.top + r.height * pos / 100)) < 40 : Math.abs(e.clientX - (r.left + r.width * pos / 100)) < 40;
+      if (e.pointerType !== 'mouse' && !near) return;
+      dragging = true; el.setPointerCapture(e.pointerId); move(e);
+    });
+    el.addEventListener('pointermove', (e) => dragging && move(e));
+    el.addEventListener('pointerup', () => (dragging = false));
+    el.addEventListener('pointercancel', () => (dragging = false));
+  });
+</script>
+
+<style>
+  .cmp-fig { margin: 0; }
+  .cmp { position: relative; overflow: hidden; border-radius: var(--r-card); border: 1px solid var(--line); background: #000; user-select: none; touch-action: pan-y; }
+  .cmp.vertical { touch-action: pan-x; }
+  .cmp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .before { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  .vertical .before { clip-path: inset(0 0 calc(100% - var(--pos)) 0); }
+  .handle { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; margin-left: -1px; background: var(--gold); pointer-events: none; }
+  .vertical .handle { top: var(--pos); bottom: auto; left: 0; right: 0; width: auto; height: 2px; margin: -1px 0 0; }
+  .handle span { position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; background: var(--gold); }
+  .handle span::before, .handle span::after { content: ''; position: absolute; top: 50%; width: 7px; height: 7px; border-left: 2px solid var(--bg); border-bottom: 2px solid var(--bg); }
+  .handle span::before { left: 10px; transform: translateY(-50%) rotate(45deg); }
+  .handle span::after { right: 10px; transform: translateY(-50%) rotate(-135deg); }
+  .vertical .handle span::before { left: 50%; top: 10px; transform: translateX(-50%) rotate(135deg); }
+  .vertical .handle span::after { left: 50%; right: auto; top: auto; bottom: 10px; transform: translateX(-50%) rotate(-45deg); }
+  .lbl { position: absolute; top: 12px; padding: 2px 12px; border-radius: 999px; background: rgba(5,4,3,.78); border: 1px solid var(--line-strong); font-size: 13px; color: var(--ivory-dim); pointer-events: none; }
+  .l1 { left: 12px; } .l2 { right: 12px; }
+  .vertical .l2 { right: auto; left: 12px; top: auto; bottom: 12px; }
+  input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; cursor: ew-resize; pointer-events: none; }
+  .vertical input { cursor: ns-resize; }
+  input:focus-visible ~ .handle span, .cmp:has(input:focus-visible) .handle span { outline: 2px solid var(--ivory); outline-offset: 3px; }
+  figcaption { margin-top: 10px; font-size: var(--fs-sm); color: var(--muted); text-align: center; }
+</style>

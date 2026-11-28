@@ -1,0 +1,85 @@
+---
+import Base from '../../layouts/Base.astro';
+import Compare from '../../components/Compare.astro';
+import FaqList from '../../components/FaqList.astro';
+import Cta from '../../components/Cta.astro';
+import { SITE, PRICES, wa } from '../../data/site';
+import { faqByGroup } from '../../data/faq';
+
+const waText = '查詢雙人先人瓷相（合葬用）';
+const service = {
+  '@context': 'https://schema.org', '@type': 'Service',
+  name: '雙人先人瓷相（合葬用）修復及合成', serviceType: '雙人遺照合成及修復',
+  provider: { '@id': `${SITE.url}/#business` }, areaServed: 'Hong Kong',
+  offers: { '@type': 'Offer', price: String(PRICES.double), priceCurrency: 'HKD', description: '雙人合照一張，一口價，交付 3:4 高清電子檔' },
+};
+---
+<Base
+  title="雙人合葬相・雙人瓷相 HK$600"
+  description={`雙人先人瓷相（合葬用）一口價 HK$${PRICES.double}：兩張單人相合成，或修復現有雙人合照。按男左女右排位，適用於合葬、雙人瓷相及石碑相片，交付 3:4 高清電子檔。`}
+  crumbs={[{ label: '服務', href: '/services/portrait/' }, { label: '雙人合葬・瓷相' }]}
+  schema={[service]}
+>
+  <section class="section first">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">合葬・瓷相・石碑相</span>
+        <h1>雙人先人瓷相（合葬用）</h1>
+        <p class="lead">可由兩張單人相合成一張雙人合照，或由一張現有雙人合照修復，專為合葬、雙人瓷相及石碑相片而設。</p>
+        <p class="price">HK${PRICES.double} <small>/ 雙人合照・一口價，不另收費</small></p>
+        <div class="btn-row">
+          <a class="btn btn-gold" href={SITE.formUrl} target="_blank" rel="noopener">網上訂購</a>
+          <a class="btn btn-line" href={wa(waText)} target="_blank" rel="noopener">查詢雙人合葬相</a>
+        </div>
+      </div>
+      <div class="cmp-wrap"><Compare before="/assets/samples/sample-d-before.jpg" after="/assets/samples/sample-d-after.jpg" beforeAlt="修復前：多人慶生合照，需從中裁出兩位長者" afterAlt="雙人先人瓷相（合葬用）修復後：黑白雙人肖像" ratio="16/9" vertical eager caption="上下拖曳：由多人合照裁出兩位先人，合成雙人瓷相" /></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2">
+      <div class="card">
+        <h2 class="h3">做法一：兩張單人相合成</h2>
+        <p class="muted">兩位先人只有各自嘅單人相，我們會合成一張雙人合照。兩位先人的面部大小、光線及背景會統一處理，令整體自然協調。</p>
+      </div>
+      <div class="card">
+        <h2 class="h3">做法二：修復現有雙人合照</h2>
+        <p class="muted">已有兩位先人嘅合照，我們會修復瑕疵、整理背景，按需要調整位置。</p>
+      </div>
+    </div>
+    <div class="container narrow mt-lg">
+      <p>建議同時提供多張不同角度或年代的參考相，讓我們更準確還原兩位先人的神韻。交付 3:4 高清電子檔。</p>
+      <p class="muted small">本公司只提供電子檔，瓷相及石碑的實體製作請向相關供應商查詢；尺寸要求請先向石廠或瓷相店確認。</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <span class="eyebrow">排位</span>
+      <h2>男左女右點計？</h2>
+      <p>傳統一般以先人視角為準，<strong>男左女右</strong>：即站在墓碑前面向墓碑時，<strong>男士在右、女士在左</strong>，碑文上的名字、生卒年亦須與相片左右位置一致。</p>
+      <p class="muted">不同墓園及家庭習俗或有分別，建議先向墓園、石碑供應商或家人確認。如你提供的相片尺寸、比例或人物位置不符合要求（例如只有兩張單人相、左右位置相反或構圖不同），我們都可以協助調整、合成及重新排位，毋須擔心。</p>
+      <div class="todo">【待補】詳細指南文章「雙人合葬相：男左女右點計？」完成後，喺呢度連過去。</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <h2>相關問題</h2>
+      <FaqList items={faqByGroup('double')} />
+      <p class="mt"><a href="/faq/">全部常見問題 →</a>　<a href="/rules/">服務規則 →</a></p>
+    </div>
+  </section>
+
+  <Cta waText={waText} />
+</Base>
+
+<style>
+  .first { padding-top: 40px; }
+  .price { margin: 8px 0 24px; }
+  .h3 { font-size: var(--fs-h3); }
+  .mt { margin-top: 20px; }
+  .mt-lg { margin-top: 40px; }
+  .todo { margin-top: 24px; }
+  .cmp-wrap { max-width: 900px; }
+</style>

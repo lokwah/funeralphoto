@@ -1,0 +1,26 @@
+---
+// 三步流程（首頁同訂購頁共用）
+import { PRICES } from '../data/site';
+const steps = [
+  { t: '選擇 2–3 張相片 + WhatsApp 免費初步評估', d: '先人生前的舊相、合照或手機相片皆可，原始檔案越清晰、越大張，修復效果越理想。揀好之後連同用途（車頭相、靈堂相、寵物遺照等）WhatsApp 傳送給我們，團隊會於一個工作天內回覆評估結果。' },
+  { t: '網上落單 + 完成付款', d: `確認相片後，填寫網上訂單表格，一口價 HK$${PRICES.single}／張，不設額外收費或隱藏費用。接受 VISA、Mastercard、PayPal、Payme、轉數快 FPS 及銀行過數，確認收款後隨即開始處理。` },
+  { t: '專業數碼修復 + 交付高清電子檔', d: '修復舊相瑕疵、整理背景與儀容，過程中不會擅自改變先人的五官、年齡或個人特徵。完成後交付 2250 × 3000 高清 JPG 電子檔，可自行交予殯儀館、相片沖印店或其他供應商使用。' },
+];
+---
+<ol class="steps">
+  {steps.map((s, i) => (
+    <li class="card">
+      <span class="num">0{i + 1}</span>
+      <h3>{s.t}</h3>
+      <p>{s.d}</p>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .num { display: inline-block; font-size: 15px; font-weight: 500; color: var(--gold); border: 1px solid var(--gold); border-radius: 999px; padding: 2px 12px; margin-bottom: 16px; }
+  h3 { font-size: var(--fs-lg); }
+  p { color: var(--ivory-dim); margin: 0; }
+  @media (max-width: 900px) { .steps { grid-template-columns: 1fr; } }
+</style>

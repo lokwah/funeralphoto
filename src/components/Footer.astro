@@ -1,0 +1,60 @@
+---
+import Logo from './Logo.astro';
+import { SITE, wa } from '../data/site';
+const { updated } = Astro.props;
+---
+<footer class="footer">
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a class="brand" href="/"><Logo id="logoGradFooter" size={26} /> {SITE.name}</a>
+        <p class="muted small">只需傳送相片及告訴我們用途，例如「車頭相」、「靈堂相」、「石碑相」、「瓷相」、「先人相修復」或「寵物紀念相」，我們會先評估相片狀況，再提供合適建議。</p>
+      </div>
+      <div>
+        <h2 class="h">服務</h2>
+        <ul>
+          <li><a href="/services/portrait/">車頭相・靈堂相・先人相修復</a></li>
+          <li><a href="/services/double/">雙人合葬・瓷相</a></li>
+          <li><a href="/services/other/">上門拍攝・寵物遺照・USB・悼念冊</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="h">資料</h2>
+        <ul>
+          <li><a href="/guide/">實用指南</a></li>
+          <li><a href="/faq/">常見問題</a></li>
+          <li><a href="/rules/">服務規則</a></li>
+          <li><a href="/about/">關於我哋</a></li>
+          <li><a href="/order/">點樣訂購</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="h">聯絡我們</h2>
+        <ul>
+          <li><a href={wa()} target="_blank" rel="noopener">WhatsApp：{SITE.phoneDisplay}</a></li>
+          <li><a href={`mailto:${SITE.email}`}>Email：{SITE.email}</a></li>
+          <li><a href={SITE.formUrl} target="_blank" rel="noopener">網上落單表格</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      <p>只提供電子檔修復，不設實體沖印、相框或石碑製作</p>
+      <p>本頁最後更新：<time datetime={updated}>{updated}</time> ・ Copyright © {new Date(updated).getFullYear()} {SITE.company}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--bg-deep); border-top: 1px solid var(--line); padding: 64px 0 120px; font-size: var(--fs-sm); }
+  .cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: 32px; }
+  .brand { display: flex; align-items: center; gap: 10px; color: var(--ivory); text-decoration: none; font-weight: 500; margin-bottom: 12px; }
+  .h { font-size: 15px; font-weight: 500; color: var(--gold); margin-bottom: 12px; }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  ul a { color: var(--ivory-dim); text-decoration: none; }
+  ul a:hover { color: var(--gold); }
+  .bottom { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: var(--fs-xs); }
+  .bottom p { margin: 0 0 4px; }
+  @media (min-width: 901px) { .footer { padding-bottom: 64px; } }
+  @media (max-width: 900px) { .cols { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .cols { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,72 @@
+---
+import Logo from './Logo.astro';
+import { NAV, SITE } from '../data/site';
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href.split('/').slice(0, 2).join('/') + '/'));
+---
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="/" aria-label={`${SITE.name} 首頁`}>
+      <Logo id="logoGradHeader" />
+      <span>{SITE.name}</span>
+    </a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="navMenu">
+      <span class="sr-only">選單</span><span class="bar"></span><span class="bar"></span>
+    </button>
+    <nav class="menu" id="navMenu" aria-label="主選單">
+      <ul>
+        {NAV.map((item) => (
+          <li class={item.children ? 'has-sub' : ''}>
+            <a href={item.href} class={isActive(item.href) ? 'active' : ''}>{item.label}</a>
+            {item.children && (
+              <ul class="sub">
+                {item.children.map((c) => <li><a href={c.href} aria-current={path === c.href ? 'page' : undefined}>{c.label}</a></li>)}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+      <a class="btn btn-gold nav-cta" href="/order/">訂購</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('burger');
+  const menu = document.getElementById('navMenu');
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    menu?.classList.toggle('open', !open);
+  });
+</script>
+
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(10,9,6,.96); border-bottom: 1px solid var(--line); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; min-height: 68px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; color: var(--ivory); text-decoration: none; font-weight: 500; font-size: 16px; }
+  .menu { display: flex; align-items: center; gap: 28px; }
+  .menu ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 24px; }
+  .menu > ul > li { position: relative; }
+  .menu a { color: var(--ivory-dim); text-decoration: none; font-size: 15px; }
+  .menu a:hover, .menu a.active { color: var(--gold); }
+  .menu .nav-cta { color: var(--bg); min-height: 40px; padding: 8px 22px; font-size: 15px; }
+  .has-sub > a::after { content: ''; display: inline-block; margin-left: 6px; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-3px) rotate(45deg); }
+  .sub { position: absolute; top: 100%; left: -16px; display: none !important; flex-direction: column; gap: 0 !important; min-width: 200px; padding: 8px !important; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-card); }
+  .sub a { display: block; padding: 8px 12px; border-radius: 6px; }
+  .has-sub:hover .sub, .has-sub:focus-within .sub { display: flex !important; }
+  .burger { display: none; background: none; border: 1px solid var(--line-strong); border-radius: 999px; width: 44px; height: 44px; padding: 0; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+  .burger .bar { display: block; width: 18px; height: 1.5px; background: var(--ivory); }
+
+  @media (max-width: 900px) {
+    .brand span { font-size: 15px; }
+    .burger { display: flex; }
+    .menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; padding: 12px 20px 24px; gap: 16px; }
+    .menu.open { display: flex; }
+    .menu ul { flex-direction: column; gap: 0; }
+    .menu > ul > li > a { display: block; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
+    .has-sub > a::after { display: none; }
+    .sub { position: static; display: flex !important; border: 0; background: none; padding: 0 0 0 16px !important; min-width: 0; }
+    .sub a { padding: 10px 0; font-size: 16px; }
+  }
+</style>

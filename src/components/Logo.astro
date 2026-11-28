@@ -1,0 +1,13 @@
+---
+const { id = 'logoGrad', size = 30 } = Astro.props;
+---
+<svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><linearGradient id={id} x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#e8cd8a" /><stop offset="100%" stop-color="#c8a55b" />
+  </linearGradient></defs>
+  <g stroke={`url(#${id})`} stroke-width="6" stroke-linecap="round">
+    <path d="M10 28 L10 10 L28 10" /><path d="M72 10 L90 10 L90 28" />
+    <path d="M90 72 L90 90 L72 90" /><path d="M28 90 L10 90 L10 72" />
+  </g>
+  <path d="M50 24 L55.6 44.4 L76 50 L55.6 55.6 L50 76 L44.4 55.6 L24 50 L44.4 44.4 Z" fill={`url(#${id})`} />
+</svg>

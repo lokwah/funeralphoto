@@ -1,0 +1,83 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cta from '../../components/Cta.astro';
+import { SITE, PRICES, wa } from '../../data/site';
+
+const items = [
+  {
+    id: 'elder', img: '/assets/elder.jpg', alt: '香港上門長者肖像拍攝示範相片',
+    title: '香港上門長者肖像拍攝',
+    text: '如家中長者行動不便、在醫院或安老院休養，不適合前往影樓，我們可安排攝影師上門，於長者熟悉、安靜的環境，拍攝端莊自然的肖像，全程約 30 分鐘，拍攝後即場選相。',
+    tags: ['上門 30 分鐘', '即場選相', '同一規格交付'], price: `HK$${PRICES.elder}`, unit: '次', order: true,
+  },
+  {
+    id: 'pet', img: '/assets/pets.jpg', alt: '寵物遺照及紀念相片修復示範相片',
+    title: '寵物遺照及紀念相片修復',
+    text: '牠不只是寵物，而是家人。我們同樣提供舊相修復、背景整理、色彩校正及高清電子檔整理，保留愛寵本身的毛色特徵與神態，留住主人最熟悉、最有神采的一刻。',
+    tags: ['舊相修復', '背景整理', '色彩校正'], price: `HK$${PRICES.pet}`, unit: '張', order: true,
+  },
+  {
+    id: 'usb', img: '/assets/usb.jpg', alt: 'USB-C 雙插頭隨身碟備份實物相片',
+    title: 'USB-C 雙插頭隨身碟備份',
+    text: '除電子檔交付外，客戶可額外選購 USB-C 雙插頭隨身碟，作為修復相片的實體備份，適合殯儀館播放、保存先人相片、日後沖印或作家庭紀念用途。此為獨立商品，並非修復服務必須項目。',
+    tags: ['USB-C & USB-A', '支援手機／平板／電腦', '香港包郵'], price: `HK$${PRICES.usb}`, unit: '件', order: true,
+  },
+  {
+    id: 'booklet', img: '/assets/booklet.jpg', alt: '喪禮悼念冊設計及製作示範',
+    title: '喪禮悼念冊設計及製作',
+    text: '為先人設計莊重得體的紀念冊，涵蓋生平紀念冊、生平傳記、喪禮悼念冊、安息禮拜小冊子及追思會小冊子，記錄先人一生點滴，讓親友喺儀式上留存追思。',
+    tags: ['生平紀念冊', '生平傳記', '安息禮拜小冊子', '追思會小冊子'], price: '設計費用因應內容而定', unit: '', order: false,
+    waText: '查詢喪禮悼念冊設計及製作',
+  },
+];
+const schema = items.map((i) => ({
+  '@context': 'https://schema.org', '@type': 'Service', name: i.title,
+  provider: { '@id': `${SITE.url}/#business` }, areaServed: 'Hong Kong',
+  ...(i.order ? { offers: { '@type': 'Offer', price: i.price.replace(/\D/g, ''), priceCurrency: 'HKD' } } : {}),
+}));
+---
+<Base
+  title="上門長者肖像拍攝・寵物遺照・USB 備份・悼念冊"
+  description={`香港上門長者肖像拍攝 HK$${PRICES.elder}、寵物遺照修復 HK$${PRICES.pet}、USB-C 隨身碟備份 HK$${PRICES.usb}，以及喪禮悼念冊設計及製作。`}
+  crumbs={[{ label: '服務', href: '/services/portrait/' }, { label: '其他服務' }]}
+  schema={schema}
+>
+  <section class="section first">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">其他服務</span>
+        <h1>上門拍攝、寵物遺照、備份及悼念冊</h1>
+        <p class="lead">同樣以莊重態度處理，收費清楚透明。</p>
+      </div>
+      <div class="list">
+        {items.map((i) => (
+          <article class="card item" id={i.id}>
+            <img src={i.img} alt={i.alt} loading="lazy" decoding="async" />
+            <div>
+              <h2 class="h3">{i.title}</h2>
+              <p class="muted">{i.text}</p>
+              <div class="tags">{i.tags.map((t) => <span class="tag">{t}</span>)}</div>
+              <p class="price">{i.price} {i.unit && <small>/ {i.unit}</small>}</p>
+              <div class="btn-row">
+                {i.order && <a class="btn btn-gold" href={SITE.formUrl} target="_blank" rel="noopener">網上訂購</a>}
+                <a class="btn btn-line" href={wa(i.waText ?? `查詢${i.title}`)} target="_blank" rel="noopener">WhatsApp 查詢</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Cta />
+</Base>
+
+<style>
+  .first { padding-top: 40px; }
+  .list { display: grid; gap: 20px; }
+  .item { display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: center; }
+  .item img { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 6px; }
+  .h3 { font-size: var(--fs-h3); }
+  .price { font-size: 22px; margin: 8px 0 20px; }
+  @media (max-width: 760px) { .item { grid-template-columns: 1fr; gap: 20px; } .item img { max-width: 260px; } }
+</style>
