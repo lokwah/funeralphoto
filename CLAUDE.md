@@ -10,6 +10,9 @@
   - Domain 繼續喺 hostingspeed.net 註冊；搬時 nameserver 改做 Cloudflare
   - 搬時要確保 Cloudflare 冇封鎖 AI 爬蟲（GEO 需要）
   - 暫時唔開 email；舊 cPanel DNS 記錄（cpanel/webmail/whm/webdisk/cpcontacts/cpcalendars）搬時清走
+- Cloudflare Worker `funeralphoto`（帳戶 Lokwahk@gmail.com），`wrangler.jsonc` 設定靜態 assets = dist
+  - UAT 網址：https://funeralphoto.skyblue-jobs.workers.dev/
+  - Production branch 暫時設做 `astro-rebuild`；搬 domain 前 merge 去 main，再改返 production branch 做 `main`
 - 安全標頭：Cloudflare 用 `public/_headers`；Vercel（過渡期）用 `vercel.json`。兩邊 CSP 要一致
 - Google tag：GTM-K87JX333，Google 官方「Install manually」snippet，放喺 `src/layouts/Base.astro` `<head>` 最前，唔好改
 - 工作流程：開分支 → push → 預覽網址俾 Eddy 睇 → Eddy 確認先 merge main
